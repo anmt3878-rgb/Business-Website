@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SkyBook | Settings</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f5f7fb;
+    color:#172033;
+}
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:250px;
+    height:100vh;
+    background:#101828;
+    color:white;
+    padding:24px 16px;
+    z-index:1000;
+}
+
+.logo{
+    font-size:25px;
+    font-weight:bold;
+    margin-bottom:35px;
+    padding-left:12px;
+}
+
+.logo span{
+    color:#4f8cff;
+}
+
+.menu-title{
+    color:#8793a8;
+    font-size:11px;
+    text-transform:uppercase;
+    margin:22px 12px 10px;
+    letter-spacing:1px;
+}
+
+.sidebar a{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+    color:#aeb8c8;
+    padding:13px 14px;
+    border-radius:9px;
+    margin-bottom:5px;
+    font-size:14px;
+}
+
+.sidebar a:hover,
+.sidebar a.active{
+    background:#1d2b44;
+    color:white;
+}
+
+.admin-box{
+    position:absolute;
+    bottom:20px;
+    left:16px;
+    right:16px;
+    background:#18243a;
+    padding:14px;
+    border-radius:10px;
+}
+
+.admin-name{
+    font-weight:bold;
+    font-size:14px;
+}
+
+.admin-role{
+    color:#8793a8;
+    font-size:12px;
+    margin-top:4px;
+}
+
+.main{
+    margin-left:250px;
+    min-height:100vh;
+}
+
+.topbar{
+    height:72px;
+    background:white;
+    border-bottom:1px solid #e7eaf0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+}
+
+.topbar-title{
+    color:#6b7280;
+    font-size:14px;
+}
+
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.icon-btn{
+    width:38px;
+    height:38px;
+    border:1px solid #e5e7eb;
+    background:white;
+    border-radius:9px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.avatar{
+    width:38px;
+    height:38px;
+    background:#4f8cff;
+    color:white;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.content{
+    padding:30px;
+}
+
+.page-header{
+    margin-bottom:25px;
+}
+
+.page-header h1{
+    font-size:28px;
+}
+
+.page-header p{
+    margin-top:7px;
+    color:#6b7280;
+}
+
+.settings-layout{
+    display:grid;
+    grid-template-columns:210px 1fr;
+    gap:22px;
+    align-items:start;
+}
+
+.settings-nav{
+    background:white;
+    border:1px solid #e8ebf1;
+    border-radius:12px;
+    padding:10px;
+}
+
+.settings-nav button{
+    width:100%;
+    text-align:left;
+    border:0;
+    background:white;
+    padding:12px;
+    border-radius:8px;
+    cursor:pointer;
+    color:#687386;
+    margin-bottom:4px;
+    font-size:13px;
+}
+
+.settings-nav button:hover,
+.settings-nav button.active{
+    background:#edf4ff;
+    color:#315fd8;
+    font-weight:bold;
+}
+
+.settings-content{
+    min-width:0;
+}
+
+.panel{
+    display:none;
+}
+
+.panel.active{
+    display:block;
+}
+
+.card{
+    background:white;
+    border:1px solid #e8ebf1;
+    border-radius:12px;
+    padding:23px;
+    margin-bottom:20px;
+}
+
+.card h2{
+    font-size:18px;
+    margin-bottom:7px;
+}
+
+.card-description{
+    color:#727d8e;
+    font-size:13px;
+    margin-bottom:22px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+
+.form-group.full{
+    grid-column:1/-1;
+}
+
+label{
+    font-size:12px;
+    font-weight:bold;
+    color:#4b5563;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:11px 12px;
+    border:1px solid #dfe3ea;
+    border-radius:8px;
+    outline:none;
+    background:white;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+textarea{
+    min-height:90px;
+    resize:vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#4f8cff;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    margin-top:22px;
+}
+
+.primary-btn,
+.secondary-btn,
+.danger-btn{
+    border:0;
+    padding:11px 17px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.primary-btn{
+    background:#4f8cff;
+    color:white;
+}
+
+.secondary-btn{
+    background:#eef1f5;
+    color:#374151;
+}
+
+.danger-btn{
+    background:#fee2e2;
+    color:#b91c1c;
+}
+
+.setting-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding:17px 0;
+    border-bottom:1px solid #edf0f4;
+}
+
+.setting-row:last-child{
+    border-bottom:0;
+}
+
+.setting-info h3{
+    font-size:14px;
+    margin-bottom:5px;
+}
+
+.setting-info p{
+    color:#7a8494;
+    font-size:12px;
+    line-height:1.5;
+}
+
+.switch{
+    position:relative;
+    width:48px;
+    height:26px;
+    flex-shrink:0;
+}
+
+.switch input{
+    display:none;
+}
+
+.slider{
+    position:absolute;
+    inset:0;
+    background:#d6dae2;
+    border-radius:30px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.slider:before{
+    content:"";
+    position:absolute;
+    width:20px;
+    height:20px;
+    left:3px;
+    top:3px;
+    background:white;
+    border-radius:50%;
+    transition:.2s;
+}
+
+.switch input:checked + .slider{
+    background:#4f8cff;
+}
+
+.switch input:checked + .slider:before{
+    transform:translateX(22px);
+}
+
+.status-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.system-item{
+    border:1px solid #e7eaf0;
+    border-radius:10px;
+    padding:16px;
+}
+
+.system-label{
+    color:#7a8494;
+    font-size:12px;
+    margin-bottom:7px;
+}
+
+.system-value{
+    font-weight:bold;
+    font-size:14px;
+}
+
+.online{
+    color:#16a34a;
+}
+
+.warning{
+    color:#d97706;
+}
+
+.danger{
+    color:#dc2626;
+}
+
+.demo-note{
+    background:#fff8e6;
+    border:1px solid #f4df9c;
+    color:#7a5a00;
+    padding:14px 16px;
+    border-radius:9px;
+    font-size:12px;
+    line-height:1.6;
+    margin-top:20px;
+}
+
+@media(max-width:900px){
+
+    .settings-layout{
+        grid-template-columns:1fr;
+    }
+
+    .settings-nav{
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:5px;
+    }
+
+    .settings-nav button{
+        margin:0;
+    }
+}
+
+@media(max-width:800px){
+
+    .sidebar{
+        width:210px;
+    }
+
+    .main{
+        margin-left:210px;
+    }
+
+    .content{
+        padding:20px;
+    }
+}
+
+@media(max-width:600px){
+
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+    }
+
+    .admin-box{
+        position:static;
+        margin-top:20px;
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .topbar{
+        padding:0 15px;
+    }
+
+    .content{
+        padding:15px;
+    }
+
+    .settings-nav{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .form-grid,
+    .status-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-group.full{
+        grid-column:auto;
+    }
+
+    .setting-row{
+        align-items:flex-start;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+    <div class="logo">
+        Sky<span>Book</span>
+    </div>
+
+    <div class="menu-title">Main Menu</div>
+
+    <a href="admin.html">📊 Dashboard</a>
+    <a href="admin-flights.html">✈️ Flights</a>
+    <a href="manage-booking.html">🎫 Bookings</a>
+    <a href="admin-passengers.html">👥 Passengers</a>
+    <a href="admin-revenue.html">💰 Revenue</a>
+
+    <div class="menu-title">Management</div>
+
+    <a href="admin-analytics.html">📈 Analytics</a>
+    <a href="admin-settings.html" class="active">⚙️ Settings</a>
+
+    <div class="admin-box">
+        <div class="admin-name">Shoaib Admin</div>
+        <div class="admin-role">Platform Administrator</div>
+    </div>
+
+</aside>
+
+<main class="main">
+
+    <div class="topbar">
+
+        <div class="topbar-title">
+            SkyBook / Settings
+        </div>
+
+        <div class="top-actions">
+            <button class="icon-btn" onclick="showDemo('Notifications')">🔔</button>
+            <div class="avatar">S</div>
+        </div>
+
+    </div>
+
+    <div class="content">
+
+        <div class="page-header">
+
+            <h1>Settings</h1>
+
+            <p>
+                Configure your SkyBook platform and administration preferences.
+            </p>
+
+        </div>
+
+        <div class="settings-layout">
+
+            <div class="settings-nav">
+
+                <button class="active" onclick="showPanel('general',this)">
+                    ⚙️ General
+                </button>
+
+                <button onclick="showPanel('booking',this)">
+                    🎫 Booking
+                </button>
+
+                <button onclick="showPanel('notifications',this)">
+                    🔔 Notifications
+                </button>
+
+                <button onclick="showPanel('security',this)">
+                    🔐 Security
+                </button>
+
+                <button onclick="showPanel('system',this)">
+                    🖥️ System
+                </button>
+
+            </div>
+
+            <div class="settings-content">
+
+                <!-- GENERAL -->
+
+                <section class="panel active" id="general">
+
+                    <div class="card">
+
+                        <h2>General Settings</h2>
+
+                        <p class="card-description">
+                            Manage your company and platform information.
+                        </p>
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+                                <label>Company Name</label>
+                                <input id="companyName" value="SkyBook Airlines">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Platform Name</label>
+                                <input id="platformName" value="SkyBook">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Admin Email</label>
+                                <input id="adminEmail" type="email" value="admin@skybook.demo">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input id="phone" value="+93 700 000 000">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Country</label>
+                                <select id="country">
+                                    <option>Afghanistan</option>
+                                    <option>United Arab Emirates</option>
+                                    <option>United States</option>
+                                    <option>United Kingdom</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Currency</label>
+                                <select id="currency">
+                                    <option>USD - US Dollar</option>
+                                    <option>AED - UAE Dirham</option>
+                                    <option>EUR - Euro</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group full">
+                                <label>Business Address</label>
+                                <textarea id="address">SkyBook Business Center</textarea>
+                            </div>
+
+                        </div>
+
+                        <div class="actions">
+
+                            <button class="primary-btn" onclick="saveGeneral()">
+                                Save Changes
+                            </button>
+
+                            <button class="secondary-btn" onclick="resetGeneral()">
+                                Reset
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="card">
+
+                        <h2>Regional Preferences</h2>
+
+                        <p class="card-description">
+                            Configure language and timezone preferences.
+                        </p>
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+                                <label>Language</label>
+
+                                <select id="language">
+                                    <option>English</option>
+                                    <option>Persian</option>
+                                    <option>Arabic</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Timezone</label>
+
+                                <select id="timezone">
+                                    <option>UTC +04:30 Kabul</option>
+                                    <option>UTC +04:00 Dubai</option>
+                                    <option>UTC -05:00 New York</option>
+                                    <option>UTC +00:00 London</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- BOOKING -->
+
+                <section class="panel" id="booking">
+
+                    <div class="card">
+
+                        <h2>Booking Settings</h2>
+
+                        <p class="card-description">
+                            Control the main booking features of the platform.
+                        </p>
+
+                        <div class="setting-row">
+
+                            <div class="setting-info">
+                                <h3>Online Booking</h3>
+                                <p>Allow customers to create new bookings.</p>
+                            </div>
+
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+
+                        </div>
+
+                        <div class="setting-row">
+
+                            <div class="setting-info">
+                                <h3>Seat Selection</h3>
+                                <p>Allow passengers to select seats during booking.</p>
+                            </div>
+
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+
+                        </div>
+
+                        <div class="setting-row">
+
+                            <div class="setting-info">
+                                <h3>Manage Booking</h3>
+                                <p>Allow passengers to search for existing bookings.</p>
+                            </div>
+
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+
+                        </div>
+
+                        <div class="setting-row">
+
+                            <div class="setting-info">
+                                <h3>Passport Information</h3>
+                                <p>Request passport details during passenger registration.</p>
+                            </div>
+
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+
+                        </div>
+
+                        <div class="setting-row">
+
+                            <div class="setting-info">
+                                <h3>Automatic Confirmation</h3>
+                                <p>Automatically confirm successful demo bookings.</p>
+                            </div>
+
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="card">
+
+                        <h2>Cancellation Policy</h2>
+
+                        <p class="card-description">
+                            Configure cancellation and refund settings.
+                        </p>
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+                                <label>Cancellation Window</label>
+
+                                <select>
+                                    <option>24 Hours</option>
+                                    <option selected>48 Hours</option>
+                                    <option>72 Hours</option>
+                                    <option>7 Days</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Refund Policy</label>
+
+                                <select>
+                                    <option>Full Refund</option>
+                                    <option selected>90% Refund</option>
+                                    <option>75% Refund</option>
+                                    <option>No Refund</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="actions">
+
+                            <button class="primary-btn" onclick="saveSettings()">
+                                Save Booking Settings
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- NOTIFICATIONS -->
+
+                <section class="panel" id="notifications">
+
+                    <div class="card">
+
+                        <h2>Notification Settings</h2>
+
+                        <p class="card-description">
+                            Choose which notifications the platform should send.
+                        </p>
+
+                        <div class="setting-row">
+
+                            <div class="setting-info">
+                                <h3>Booking Confirmation</h3>
+                                <p>Notify passengers after a successful booking.</p>
+                            </div>
+
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+
+                        </div>
+
+                        <div class="setting-row">
+
+                            <div class="setting-info">
+                                <h3>Payment Notifications</h3>
+                                <p>Notify administrators when a payment is completed.</p>
+                            </div>
+
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+
+                        </div>
+
+                        <div class="setting-row">
+
+                            <div class="setting-info">
+                                <h3>Flight Delay Alerts</h3>
+                                <p>Send alerts when a flight is delayed.</p>
+                            </div>
+
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+
+                        </div>
+
+                        <div class="setting-row">
+
+                            <div class="setting-info">
+                                <h3>Admin Reports</h3>
+                                <p>Receive periodic reports about platform performance.</p>
+                            </div>
+
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- SECURITY -->
+
+                <section class="panel" id="security">
+
+                    <div class="card">
+
+                        <h2>Security Settings</h2>
+
+                        <p class="card-description">
+                            Manage administrator security controls.
+                        </p>
+
+                        <div class="setting-row">
+
+                            <div class="setting-info">
+                                <h3>Password Protection</h3>
+                                <p>Require administrator authentication.</p>
+                            </div>
+
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+
+                        </div>
+
+                        <div class="setting-row">
+
+                            <div class="setting-info">
+                                <h3>Two-Factor Authentication</h3>
+                                <p>Add an additional authentication layer.</p>
+                            </div>
+
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+
+                        </div>
+
+                        <div class="setting-row">
+
+                            <div class="setting-info">
+                                <h3>Login Activity Monitoring</h3>
+                                <p>Monitor administrator login activity.</p>
+                            </div>
+
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="card">
+
+                        <h2>Change Password</h2>
+
+                        <p class="card-description">
+                            Demo administrator password form.
+                        </p>
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+                                <label>Current Password</label>
+                                <input type="password" placeholder="••••••••">
+                            </div>
+
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input type="password" placeholder="••••••••">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Confirm New Password</label>
+                                <input type="password" placeholder="••••••••">
+                            </div>
+
+                        </div>
+
+                        <div class="actions">
+
+                            <button class="primary-btn" onclick="changePassword()">
+                                Change Password
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- SYSTEM -->
+
+                <section class="panel" id="system">
+
+                    <div class="card">
+
+                        <h2>System Information</h2>
+
+                        <p class="card-description">
+                            Information about the SkyBook demo environment.
+                        </p>
+
+                        <div class="status-grid">
+
+                            <div class="system-item">
+                                <div class="system-label">Platform Version</div>
+                                <div class="system-value">SkyBook v1.0.0</div>
+                            </div>
+
+                            <div class="system-item">
+                                <div class="system-label">Environment</div>
+                                <div class="system-value online">Demo / Production Preview</div>
+                            </div>
+
+                            <div class="system-item">
+                                <div class="system-label">Storage</div>
+                                <div class="system-value online">Local Browser Storage</div>
+                            </div>
+
+                            <div class="system-item">
+                                <div class="system-label">Database Connection</div>
+                                <div class="system-value warning">Demo Only</div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="card">
+
+                        <h2>Maintenance Mode</h2>
+
+                        <p class="card-description">
+                            Temporarily disable platform access for maintenance.
+                        </p>
+
+                        <div class="setting-row">
+
+                            <div class="setting-info">
+                                <h3>Maintenance Mode</h3>
+                                <p>Demo switch for temporarily disabling the platform.</p>
+                            </div>
+
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="card">
+
+                        <h2>Demo Data</h2>
+
+                        <p class="card-description">
+                            Reset locally stored SkyBook demo information.
+                        </p>
+
+                        <button class="danger-btn" onclick="resetDemoData()">
+                            Reset Demo Data
+                        </button>
+
+                    </div>
+
+                </section>
+
+                <div class="demo-note">
+
+                    <strong>Demo Platform:</strong>
+                    These settings are part of a front-end demonstration.
+                    Settings are stored locally in the browser and are not connected
+                    to a real airline database, authentication server or production system.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+<script>
+
+function showPanel(id,button){
+
+    document.querySelectorAll(".panel").forEach(function(panel){
+        panel.classList.remove("active");
+    });
+
+    document.querySelectorAll(".settings-nav button").forEach(function(btn){
+        btn.classList.remove("active");
+    });
+
+    document.getElementById(id).classList.add("active");
+
+    button.classList.add("active");
+
+}
+
+function saveGeneral(){
+
+    const settings = {
+
+        company:
+            document.getElementById("companyName").value,
+
+        platform:
+            document.getElementById("platformName").value,
+
+        email:
+            document.getElementById("adminEmail").value,
+
+        phone:
+            document.getElementById("phone").value,
+
+        country:
+            document.getElementById("country").value,
+
+        currency:
+            document.getElementById("currency").value,
+
+        address:
+            document.getElementById("address").value,
+
+        language:
+            document.getElementById("language").value,
+
+        timezone:
+            document.getElementById("timezone").value
+
+    };
+
+    localStorage.setItem(
+        "skybook_general_settings",
+        JSON.stringify(settings)
+    );
+
+    alert("General settings saved successfully.");
+
+}
+
+function loadGeneral(){
+
+    const saved =
+        localStorage.getItem("skybook_general_settings");
+
+    if(!saved){
+        return;
+    }
+
+    try{
+
+        const settings =
+            JSON.parse(saved);
+
+        if(settings.company)
+            document.getElementById("companyName").value = settings.company;
+
+        if(settings.platform)
+            document.getElementById("platformName").value = settings.platform;
+
+        if(settings.email)
+            document.getElementById("adminEmail").value = settings.email;
+
+        if(settings.phone)
+            document.getElementById("phone").value = settings.phone;
+
+        if(settings.country)
+            document.getElementById("country").value = settings.country;
+
+        if(settings.currency)
+            document.getElementById("currency").value = settings.currency;
+
+        if(settings.address)
+            document.getElementById("address").value = settings.address;
+
+        if(settings.language)
+            document.getElementById("language").value = settings.language;
+
+        if(settings.timezone)
+            document.getElementById("timezone").value = settings.timezone;
+
+    }catch(error){
+
+        console.log("Settings could not be loaded.");
+
+    }
+
+}
+
+function resetGeneral(){
+
+    document.getElementById("companyName").value =
+        "SkyBook Airlines";
+
+    document.getElementById("platformName").value =
+        "SkyBook";
+
+    document.getElementById("adminEmail").value =
+        "admin@skybook.demo";
+
+    document.getElementById("phone").value =
+        "+93 700 000 000";
+
+    document.getElementById("country").value =
+        "Afghanistan";
+
+    document.getElementById("currency").value =
+        "USD - US Dollar";
+
+    document.getElementById("address").value =
+        "SkyBook Business Center";
+
+    alert("General settings reset.");
+
+}
+
+function saveSettings(){
+
+    alert(
+        "Booking settings saved successfully.\n\n" +
+        "This is a demo platform."
+    );
+
+}
+
+function changePassword(){
+
+    alert(
+        "Demo password update completed.\n\n" +
+        "No real administrator password is changed."
+    );
+
+}
+
+function resetDemoData(){
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to reset SkyBook demo data?"
+        );
+
+    if(!confirmed){
+        return;
+    }
+
+    localStorage.removeItem("skybook_general_settings");
+    localStorage.removeItem("skybook_admin_flights");
+    localStorage.removeItem("skybook_revenue_transactions");
+
+    alert(
+        "Demo data has been reset.\n\n" +
+        "Please reload the page."
+    );
+
+}
+
+function showDemo(name){
+
+    alert(
+        name +
+        " feature is available in the full SkyBook platform."
+    );
+
+}
+
+loadGeneral();
+
+</script>
+
+</body>
+</html>
