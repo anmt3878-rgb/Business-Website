@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SkyBook Admin Dashboard</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f5f7fb;
+    color:#172033;
+}
+
+button{
+    font-family:inherit;
+}
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:245px;
+    height:100vh;
+    background:#111827;
+    color:white;
+    padding:25px 18px;
+    z-index:10;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+    margin-bottom:35px;
+    padding-left:10px;
+}
+
+.logo span{
+    color:#3b82f6;
+}
+
+.menu-title{
+    font-size:11px;
+    color:#8b95a7;
+    text-transform:uppercase;
+    margin:20px 10px 10px;
+}
+
+.menu a{
+    display:block;
+    text-decoration:none;
+    color:#aeb7c7;
+    padding:13px 12px;
+    border-radius:8px;
+    margin-bottom:5px;
+    font-size:14px;
+}
+
+.menu a:hover,
+.menu a.active{
+    background:#1d4ed8;
+    color:white;
+}
+
+.admin-card{
+    position:absolute;
+    bottom:20px;
+    left:18px;
+    right:18px;
+    background:#1f2937;
+    border-radius:10px;
+    padding:13px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.avatar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:#2563eb;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.admin-name{
+    font-size:13px;
+    font-weight:bold;
+}
+
+.admin-role{
+    font-size:11px;
+    color:#9ca3af;
+    margin-top:3px;
+}
+
+.main{
+    margin-left:245px;
+    min-height:100vh;
+}
+
+.topbar{
+    height:70px;
+    background:white;
+    border-bottom:1px solid #e5e7eb;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+}
+
+.topbar-left{
+    font-size:15px;
+    font-weight:bold;
+}
+
+.topbar-right{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.notification{
+    width:38px;
+    height:38px;
+    border:1px solid #e5e7eb;
+    border-radius:8px;
+    background:white;
+    cursor:pointer;
+    font-size:17px;
+}
+
+.top-avatar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:#dbeafe;
+    color:#1d4ed8;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.content{
+    padding:30px;
+}
+
+.welcome{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.welcome h1{
+    font-size:28px;
+    margin-bottom:7px;
+}
+
+.welcome p{
+    color:#6b7280;
+    font-size:14px;
+}
+
+.date-box{
+    background:white;
+    border:1px solid #e5e7eb;
+    padding:12px 16px;
+    border-radius:8px;
+    font-size:13px;
+    color:#4b5563;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:25px;
+}
+
+.stat{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:20px;
+}
+
+.stat-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.stat-title{
+    color:#6b7280;
+    font-size:13px;
+}
+
+.stat-icon{
+    width:38px;
+    height:38px;
+    border-radius:9px;
+    background:#eff6ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#2563eb;
+    font-size:17px;
+}
+
+.stat-number{
+    font-size:26px;
+    font-weight:bold;
+    margin:12px 0 7px;
+}
+
+.stat-change{
+    color:#16a34a;
+    font-size:12px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:20px;
+    margin-bottom:25px;
+}
+
+.card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:22px;
+}
+
+.card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.card-header h2{
+    font-size:17px;
+}
+
+.card-header span{
+    font-size:12px;
+    color:#6b7280;
+}
+
+.chart{
+    height:220px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-around;
+    gap:15px;
+    padding:20px 10px 0;
+    border-bottom:1px solid #e5e7eb;
+}
+
+.bar-wrap{
+    height:100%;
+    display:flex;
+    align-items:flex-end;
+    gap:6px;
+}
+
+.bar{
+    width:25px;
+    background:#2563eb;
+    border-radius:5px 5px 0 0;
+}
+
+.bar.light{
+    background:#93c5fd;
+}
+
+.months{
+    display:flex;
+    justify-content:space-around;
+    color:#6b7280;
+    font-size:11px;
+    margin-top:10px;
+}
+
+.performance{
+    text-align:center;
+    padding:15px 0;
+}
+
+.score{
+    width:150px;
+    height:150px;
+    border-radius:50%;
+    border:14px solid #dbeafe;
+    border-top-color:#2563eb;
+    border-right-color:#2563eb;
+    margin:10px auto 20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    font-weight:bold;
+    color:#172033;
+}
+
+.excellent{
+    display:inline-block;
+    background:#dcfce7;
+    color:#15803d;
+    padding:7px 14px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.table-card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:22px;
+    margin-bottom:25px;
+}
+
+.table-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.table-header h2{
+    font-size:17px;
+}
+
+.view-all{
+    color:#2563eb;
+    font-size:12px;
+    cursor:pointer;
+}
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:760px;
+}
+
+th{
+    text-align:left;
+    color:#6b7280;
+    font-size:11px;
+    text-transform:uppercase;
+    padding:12px;
+    border-bottom:1px solid #e5e7eb;
+}
+
+td{
+    padding:15px 12px;
+    border-bottom:1px solid #f0f1f4;
+    font-size:13px;
+}
+
+.status{
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.confirmed{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.pending{
+    background:#fef3c7;
+    color:#a16207;
+}
+
+.cancelled{
+    background:#fee2e2;
+    color:#b91c1c;
+}
+
+.empty{
+    text-align:center;
+    padding:30px;
+    color:#9ca3af;
+}
+
+.bottom-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.activity{
+    display:flex;
+    gap:12px;
+    padding:13px 0;
+    border-bottom:1px solid #f0f1f4;
+}
+
+.activity:last-child{
+    border-bottom:none;
+}
+
+.activity-icon{
+    width:34px;
+    height:34px;
+    border-radius:8px;
+    background:#eff6ff;
+    color:#2563eb;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+}
+
+.activity-text{
+    font-size:13px;
+    line-height:1.5;
+}
+
+.activity-time{
+    font-size:11px;
+    color:#9ca3af;
+    margin-top:3px;
+}
+
+.actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.action{
+    padding:15px;
+    border:1px solid #e5e7eb;
+    border-radius:9px;
+    background:white;
+    cursor:pointer;
+    text-align:left;
+    font-size:13px;
+    color:#172033;
+}
+
+.action:hover{
+    background:#f8fafc;
+}
+
+.mobile-menu{
+    display:none;
+}
+
+@media(max-width:1000px){
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:700px){
+    .sidebar{
+        width:220px;
+        transform:translateX(-100%);
+        transition:.3s;
+    }
+
+    .sidebar.open{
+        transform:translateX(0);
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .mobile-menu{
+        display:block;
+        background:none;
+        border:none;
+        font-size:22px;
+        cursor:pointer;
+        margin-right:12px;
+    }
+
+    .topbar-left{
+        display:flex;
+        align-items:center;
+    }
+
+    .content{
+        padding:18px;
+    }
+
+    .welcome{
+        align-items:flex-start;
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .welcome h1{
+        font-size:23px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .bottom-grid{
+        grid-template-columns:1fr;
+    }
+
+    .topbar{
+        padding:0 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+        Sky<span>Book</span>
+    </div>
+
+    <div class="menu-title">Main Menu</div>
+
+    <div class="menu">
+        <a href="admin.html" class="active">Dashboard</a>
+        <a href="flights.html">Flights</a>
+        <a href="manage-booking.html">Bookings</a>
+        <a href="passenger.html">Passengers</a>
+        <a href="admin.html">Revenue</a>
+    </div>
+
+    <div class="menu-title">Management</div>
+
+    <div class="menu">
+        <a href="admin.html">Analytics</a>
+        <a href="admin.html">Settings</a>
+    </div>
+
+    <div class="admin-card">
+        <div class="avatar">S</div>
+        <div>
+            <div class="admin-name">Shoaib Admin</div>
+            <div class="admin-role">Administrator</div>
+        </div>
+    </div>
+
+</aside>
+
+
+<div class="main">
+
+    <header class="topbar">
+
+        <div class="topbar-left">
+            <button class="mobile-menu" onclick="toggleMenu()">☰</button>
+            SkyBook Admin
+        </div>
+
+        <div class="topbar-right">
+            <button class="notification" onclick="showNotification()">🔔</button>
+            <div class="top-avatar">S</div>
+        </div>
+
+    </header>
+
+
+    <main class="content">
+
+        <section class="welcome">
+
+            <div>
+                <h1>Dashboard Overview</h1>
+                <p>Monitor bookings, passengers, revenue and platform performance.</p>
+            </div>
+
+            <div class="date-box">
+                September 11, 2026
+            </div>
+
+        </section>
+
+
+        <section class="stats">
+
+            <div class="stat">
+
+                <div class="stat-top">
+                    <div class="stat-title">Total Bookings</div>
+                    <div class="stat-icon">✈</div>
+                </div>
+
+                <div class="stat-number" id="totalBookings">1,284</div>
+
+                <div class="stat-change">
+                    +12.5% this month
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-top">
+                    <div class="stat-title">Total Revenue</div>
+                    <div class="stat-icon">💰</div>
+                </div>
+
+                <div class="stat-number" id="totalRevenue">$384K</div>
+
+                <div class="stat-change">
+                    +8.4% this month
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-top">
+                    <div class="stat-title">Passengers</div>
+                    <div class="stat-icon">👤</div>
+                </div>
+
+                <div class="stat-number" id="totalPassengers">8,426</div>
+
+                <div class="stat-change">
+                    +9.2% this month
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-top">
+                    <div class="stat-title">Booking Success</div>
+                    <div class="stat-icon">✓</div>
+                </div>
+
+                <div class="stat-number">94.8%</div>
+
+                <div class="stat-change">
+                    +2.1% this month
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="grid">
+
+            <div class="card">
+
+                <div class="card-header">
+                    <h2>Booking Overview</h2>
+                    <span>Last 7 months</span>
+                </div>
+
+                <div class="chart">
+
+                    <div class="bar-wrap">
+                        <div class="bar" style="height:45%;"></div>
+                        <div class="bar light" style="height:30%;"></div>
+                    </div>
+
+                    <div class="bar-wrap">
+                        <div class="bar" style="height:55%;"></div>
+                        <div class="bar light" style="height:40%;"></div>
+                    </div>
+
+                    <div class="bar-wrap">
+                        <div class="bar" style="height:62%;"></div>
+                        <div class="bar light" style="height:48%;"></div>
+                    </div>
+
+                    <div class="bar-wrap">
+                        <div class="bar" style="height:70%;"></div>
+                        <div class="bar light" style="height:53%;"></div>
+                    </div>
+
+                    <div class="bar-wrap">
+                        <div class="bar" style="height:78%;"></div>
+                        <div class="bar light" style="height:61%;"></div>
+                    </div>
+
+                    <div class="bar-wrap">
+                        <div class="bar" style="height:88%;"></div>
+                        <div class="bar light" style="height:68%;"></div>
+                    </div>
+
+                    <div class="bar-wrap">
+                        <div class="bar" style="height:96%;"></div>
+                        <div class="bar light" style="height:75%;"></div>
+                    </div>
+
+                </div>
+
+                <div class="months">
+                    <span>Mar</span>
+                    <span>Apr</span>
+                    <span>May</span>
+                    <span>Jun</span>
+                    <span>Jul</span>
+                    <span>Aug</span>
+                    <span>Sep</span>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-header">
+                    <h2>Platform Performance</h2>
+                    <span>Today</span>
+                </div>
+
+                <div class="performance">
+
+                    <div class="score">
+                        94
+                    </div>
+
+                    <div class="excellent">
+                        EXCELLENT
+                    </div>
+
+                    <p style="margin-top:15px;color:#6b7280;font-size:13px;">
+                        Platform is performing well.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="table-card">
+
+            <div class="table-header">
+                <h2>Recent Bookings</h2>
+                <span class="view-all" onclick="goBookings()">View All →</span>
+            </div>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Reference</th>
+                            <th>Passenger</th>
+                            <th>Route</th>
+                            <th>Airline</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="bookingTable">
+
+                        <tr>
+                            <td>SB8K4P2</td>
+                            <td>John Smith</td>
+                            <td>Kabul → Dubai</td>
+                            <td>Sky Airways</td>
+                            <td>$249</td>
+                            <td>
+                                <span class="status confirmed">Confirmed</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>SB7M2L9</td>
+                            <td>Sarah Wilson</td>
+                            <td>Dubai → London</td>
+                            <td>Global Air</td>
+                            <td>$589</td>
+                            <td>
+                                <span class="status confirmed">Confirmed</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>SB4P8Q1</td>
+                            <td>Michael Brown</td>
+                            <td>New York → Paris</td>
+                            <td>World Express</td>
+                            <td>$799</td>
+                            <td>
+                                <span class="status pending">Pending</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>SB3X6T4</td>
+                            <td>Emma Davis</td>
+                            <td>London → Dubai</td>
+                            <td>Sky Airways</td>
+                            <td>$449</td>
+                            <td>
+                                <span class="status cancelled">Cancelled</span>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <section class="bottom-grid">
+
+            <div class="card">
+
+                <div class="card-header">
+                    <h2>Recent Activity</h2>
+                    <span>Live Demo</span>
+                </div>
+
+                <div id="activityList">
+
+                    <div class="activity">
+
+                        <div class="activity-icon">✓</div>
+
+                        <div>
+                            <div class="activity-text">
+                                Booking <b>SB8K4P2</b> was confirmed.
+                            </div>
+
+                            <div class="activity-time">
+                                Just now
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="activity">
+
+                        <div class="activity-icon">✈</div>
+
+                        <div>
+                            <div class="activity-text">
+                                New flight schedule added.
+                            </div>
+
+                            <div class="activity-time">
+                                15 minutes ago
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="activity">
+
+                        <div class="activity-icon">👤</div>
+
+                        <div>
+                            <div class="activity-text">
+                                Passenger profile updated.
+                            </div>
+
+                            <div class="activity-time">
+                                32 minutes ago
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-header">
+                    <h2>Quick Actions</h2>
+                    <span>Management</span>
+                </div>
+
+                <div class="actions">
+
+                    <button class="action" onclick="goBookings()">
+                        📋 Manage Bookings
+                    </button>
+
+                    <button class="action" onclick="goFlights()">
+                        ✈ View Flights
+                    </button>
+
+                    <button class="action" onclick="generateReport()">
+                        📊 Generate Report
+                    </button>
+
+                    <button class="action" onclick="platformSettings()">
+                        ⚙ Platform Settings
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+/* Mobile menu */
+function toggleMenu(){
+
+    document.getElementById("sidebar").classList.toggle("open");
+
+}
+
+
+/* Notifications */
+function showNotification(){
+
+    alert("You have 3 new notifications.");
+
+}
+
+
+/* Navigation */
+function goBookings(){
+
+    window.location.href = "manage-booking.html";
+
+}
+
+
+function goFlights(){
+
+    window.location.href = "flights.html";
+
+}
+
+
+function generateReport(){
+
+    alert("Demo report generated successfully.");
+
+}
+
+
+function platformSettings(){
+
+    alert("Platform settings are available in the full enterprise version.");
+
+}
+
+
+/* Load real demo booking from localStorage */
+function loadBooking(){
+
+    const bookingReference =
+        localStorage.getItem("booking_reference") || "SB8K4P2";
+
+    const firstName =
+        localStorage.getItem("passenger_first_name") || "John";
+
+    const lastName =
+        localStorage.getItem("passenger_last_name") || "Smith";
+
+    const passenger =
+        (firstName + " " + lastName).trim();
+
+    const from =
+        localStorage.getItem("flight_from") || "Kabul";
+
+    const to =
+        localStorage.getItem("flight_to") || "Dubai";
+
+    const airline =
+        localStorage.getItem("selected_airline") || "Sky Airways";
+
+    const price =
+        localStorage.getItem("selected_price") || "249";
+
+    const paymentStatus =
+        localStorage.getItem("payment_status") || "Demo Payment Completed";
+
+
+    /* Show current booking in table */
+
+    const table =
+        document.getElementById("bookingTable");
+
+    table.innerHTML = `
+
+        <tr>
+
+            <td>${bookingReference}</td>
+
+            <td>${passenger}</td>
+
+            <td>${from} → ${to}</td>
+
+            <td>${airline}</td>
+
+            <td>$${price}</td>
+
+            <td>
+                <span class="status confirmed">
+                    Confirmed
+                </span>
+            </td>
+
+        </tr>
+
+        <tr>
+            <td>SB7M2L9</td>
+            <td>Sarah Wilson</td>
+            <td>Dubai → London</td>
+            <td>Global Air</td>
+            <td>$589</td>
+            <td>
+                <span class="status confirmed">
+                    Confirmed
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>SB4P8Q1</td>
+            <td>Michael Brown</td>
+            <td>New York → Paris</td>
+            <td>World Express</td>
+            <td>$799</td>
+            <td>
+                <span class="status pending">
+                    Pending
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>SB3X6T4</td>
+            <td>Emma Davis</td>
+            <td>London → Dubai</td>
+            <td>Sky Airways</td>
+            <td>$449</td>
+            <td>
+                <span class="status cancelled">
+                    Cancelled
+                </span>
+            </td>
+        </tr>
+
+    `;
+
+
+    /* Update dashboard numbers */
+
+    document.getElementById("totalBookings").textContent =
+        "1,285";
+
+    document.getElementById("totalPassengers").textContent =
+        "8,427";
+
+
+    /* Update activity */
+
+    document.getElementById("activityList").innerHTML = `
+
+        <div class="activity">
+
+            <div class="activity-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <div class="activity-text">
+                    Booking <b>${bookingReference}</b>
+                    for <b>${passenger}</b>
+                    was confirmed.
+                </div>
+
+                <div class="activity-time">
+                    Just now
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="activity">
+
+            <div class="activity-icon">
+                💳
+            </div>
+
+            <div>
+
+                <div class="activity-text">
+                    Payment status:
+                    <b>${paymentStatus}</b>
+                </div>
+
+                <div class="activity-time">
+                    Just now
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="activity">
+
+            <div class="activity-icon">
+                ✈
+            </div>
+
+            <div>
+
+                <div class="activity-text">
+                    Flight selected:
+                    <b>${airline}</b>
+                </div>
+
+                <div class="activity-time">
+                    Just now
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* Start */
+loadBooking();
+
+</script>
+
+</body>
+</html>
