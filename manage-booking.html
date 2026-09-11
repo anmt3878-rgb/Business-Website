@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SkyBook - Manage Booking</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+}
+
+header{
+    background:#0b1f3a;
+    color:white;
+    padding:18px 7%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:25px;
+    font-weight:bold;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+    font-size:14px;
+}
+
+.container{
+    max-width:850px;
+    margin:50px auto;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    border-radius:20px;
+    padding:35px;
+    box-shadow:0 10px 35px rgba(0,0,0,.08);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#667085;
+    margin-bottom:30px;
+}
+
+.search-box{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+input{
+    flex:1;
+    padding:16px;
+    border:1px solid #d0d5dd;
+    border-radius:10px;
+    font-size:16px;
+    text-transform:uppercase;
+}
+
+.search-btn{
+    padding:16px 25px;
+    border:none;
+    background:#0b1f3a;
+    color:white;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.message{
+    text-align:center;
+    padding:12px;
+    margin-bottom:20px;
+    border-radius:10px;
+    display:none;
+}
+
+.error{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.success{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.booking{
+    display:none;
+    margin-top:25px;
+}
+
+.booking-header{
+    background:#0b1f3a;
+    color:white;
+    padding:20px;
+    border-radius:14px 14px 0 0;
+}
+
+.booking-header h2{
+    margin-bottom:7px;
+}
+
+.status{
+    display:inline-block;
+    background:#16a34a;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+}
+
+.details{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    padding:20px;
+    background:#f8fafc;
+    border-radius:0 0 14px 14px;
+}
+
+.detail{
+    background:white;
+    padding:16px;
+    border-radius:10px;
+}
+
+.detail span{
+    display:block;
+    color:#667085;
+    font-size:13px;
+    margin-bottom:6px;
+}
+
+.detail strong{
+    font-size:15px;
+}
+
+.buttons{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+button{
+    cursor:pointer;
+}
+
+.print{
+    flex:1;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#0b1f3a;
+    color:white;
+    font-weight:bold;
+}
+
+.home{
+    flex:1;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#e8eef7;
+    color:#0b1f3a;
+    font-weight:bold;
+    text-decoration:none;
+    text-align:center;
+}
+
+.demo{
+    margin-top:25px;
+    padding:15px;
+    background:#fff7ed;
+    color:#9a3412;
+    border-radius:10px;
+    text-align:center;
+    font-size:13px;
+}
+
+.example{
+    text-align:center;
+    margin-top:12px;
+    color:#667085;
+    font-size:13px;
+}
+
+.example strong{
+    color:#0b1f3a;
+}
+
+@media(max-width:650px){
+
+    header{
+        padding:16px 5%;
+    }
+
+    nav{
+        display:none;
+    }
+
+    .container{
+        margin:25px auto;
+        padding:12px;
+    }
+
+    .card{
+        padding:22px 15px;
+    }
+
+    .search-box{
+        flex-direction:column;
+    }
+
+    .details{
+        grid-template-columns:1fr;
+    }
+
+    .buttons{
+        flex-direction:column;
+    }
+}
+
+@media print{
+
+    header,
+    .search-box,
+    .example,
+    .demo,
+    .buttons,
+    h1,
+    .subtitle{
+        display:none;
+    }
+
+    body{
+        background:white;
+    }
+
+    .container{
+        margin:0;
+    }
+
+    .card{
+        box-shadow:none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">✈ SkyBook</div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="manage-booking.html">Manage Booking</a>
+    </nav>
+
+</header>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>Manage Booking</h1>
+
+        <p class="subtitle">
+            Enter your booking reference to view your reservation.
+        </p>
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="bookingInput"
+                placeholder="Enter Booking Reference"
+                maxlength="7"
+            >
+
+            <button
+                class="search-btn"
+                onclick="findBooking()"
+            >
+                Find Booking
+            </button>
+
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <div class="example">
+            Demo Booking Reference:
+            <strong>SB8K4P2</strong>
+        </div>
+
+        <div id="booking" class="booking">
+
+            <div class="booking-header">
+
+                <h2>Booking SB8K4P2</h2>
+
+                <span class="status">
+                    CONFIRMED
+                </span>
+
+            </div>
+
+            <div class="details">
+
+                <div class="detail">
+                    <span>Booking Reference</span>
+                    <strong>SB8K4P2</strong>
+                </div>
+
+                <div class="detail">
+                    <span>Airline</span>
+                    <strong id="airline">-</strong>
+                </div>
+
+                <div class="detail">
+                    <span>Route</span>
+                    <strong id="route">-</strong>
+                </div>
+
+                <div class="detail">
+                    <span>Date</span>
+                    <strong id="date">-</strong>
+                </div>
+
+                <div class="detail">
+                    <span>Departure</span>
+                    <strong id="departure">-</strong>
+                </div>
+
+                <div class="detail">
+                    <span>Arrival</span>
+                    <strong id="arrival">-</strong>
+                </div>
+
+                <div class="detail">
+                    <span>Passenger</span>
+                    <strong id="passenger">-</strong>
+                </div>
+
+                <div class="detail">
+                    <span>Email</span>
+                    <strong id="email">-</strong>
+                </div>
+
+                <div class="detail">
+                    <span>Seat</span>
+                    <strong id="seat">-</strong>
+                </div>
+
+                <div class="detail">
+                    <span>Passengers</span>
+                    <strong id="passengers">-</strong>
+                </div>
+
+                <div class="detail">
+                    <span>Payment</span>
+                    <strong>Demo Payment Completed</strong>
+                </div>
+
+                <div class="detail">
+                    <span>Total Price</span>
+                    <strong id="price">$0</strong>
+                </div>
+
+            </div>
+
+            <div class="buttons">
+
+                <button
+                    class="print"
+                    onclick="window.print()"
+                >
+                    🖨 Print Booking
+                </button>
+
+                <a
+                    class="home"
+                    href="index.html"
+                >
+                    Back to Home
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="demo">
+            Demo website only. This is not a real airline
+            reservation or real booking system.
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function findBooking(){
+
+    const input =
+        document.getElementById("bookingInput");
+
+    const message =
+        document.getElementById("message");
+
+    const booking =
+        document.getElementById("booking");
+
+    const reference =
+        input.value.trim().toUpperCase();
+
+    booking.style.display = "none";
+    message.style.display = "none";
+
+    // FIXED DEMO REFERENCE
+    if(reference === "SB8K4P2"){
+
+        message.textContent =
+            "Booking found successfully.";
+
+        message.className =
+            "message success";
+
+        message.style.display = "block";
+
+        // Read saved data
+        const airline =
+            localStorage.getItem("selected_airline")
+            || "Sky Airways";
+
+        const from =
+            localStorage.getItem("flight_from")
+            || "-";
+
+        const to =
+            localStorage.getItem("flight_to")
+            || "-";
+
+        const date =
+            localStorage.getItem("flight_date")
+            || "-";
+
+        const departure =
+            localStorage.getItem("selected_departure")
+            || "-";
+
+        const arrival =
+            localStorage.getItem("selected_arrival")
+            || "-";
+
+        const firstName =
+            localStorage.getItem("passenger_first_name")
+            || "";
+
+        const lastName =
+            localStorage.getItem("passenger_last_name")
+            || "";
+
+        const passenger =
+            (firstName + " " + lastName).trim()
+            || "-";
+
+        const email =
+            localStorage.getItem("passenger_email")
+            || "-";
+
+        const seat =
+            localStorage.getItem("selected_seat")
+            || "-";
+
+        const passengers =
+            localStorage.getItem("flight_passengers")
+            || "1";
+
+        const price =
+            localStorage.getItem("selected_price")
+            || "0";
+
+        // Display data
+        document.getElementById("airline")
+            .textContent = airline;
+
+        document.getElementById("route")
+            .textContent = from + " → " + to;
+
+        document.getElementById("date")
+            .textContent = date;
+
+        document.getElementById("departure")
+            .textContent = departure;
+
+        document.getElementById("arrival")
+            .textContent = arrival;
+
+        document.getElementById("passenger")
+            .textContent = passenger;
+
+        document.getElementById("email")
+            .textContent = email;
+
+        document.getElementById("seat")
+            .textContent = seat;
+
+        document.getElementById("passengers")
+            .textContent = passengers;
+
+        document.getElementById("price")
+            .textContent = "$" + price;
+
+        booking.style.display = "block";
+
+    }else{
+
+        message.textContent =
+            "Booking reference not found. Please enter SB8K4P2.";
+
+        message.className =
+            "message error";
+
+        message.style.display = "block";
+    }
+}
+
+document
+    .getElementById("bookingInput")
+    .addEventListener("keydown", function(event){
+
+        if(event.key === "Enter"){
+            findBooking();
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
