@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Booking Confirmed | SkyBook</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+}
+
+header{
+    height:72px;
+    background:#fff;
+    border-bottom:1px solid #e5e9f2;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 7%;
+}
+
+.logo{
+    font-size:25px;
+    font-weight:800;
+    color:#1769ff;
+}
+
+.logo span{
+    color:#111827;
+}
+
+.nav{
+    display:flex;
+    gap:28px;
+}
+
+.nav a{
+    text-decoration:none;
+    color:#596579;
+    font-size:14px;
+    font-weight:600;
+}
+
+.nav a:hover{
+    color:#1769ff;
+}
+
+.container{
+    width:92%;
+    max-width:1000px;
+    margin:45px auto 70px;
+}
+
+.success{
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.success-icon{
+    width:72px;
+    height:72px;
+    background:#e7f8ee;
+    color:#1c9b55;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:35px;
+    font-weight:bold;
+    margin:0 auto 18px;
+}
+
+.success h1{
+    font-size:32px;
+    margin-bottom:9px;
+}
+
+.success p{
+    color:#6d788b;
+}
+
+.ticket{
+    background:#fff;
+    border:1px solid #dfe5ee;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 12px 35px rgba(20,40,80,.08);
+}
+
+.ticket-top{
+    background:#1769ff;
+    color:white;
+    padding:25px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.ticket-brand{
+    font-size:24px;
+    font-weight:800;
+}
+
+.ticket-label{
+    text-align:right;
+    font-size:12px;
+    opacity:.85;
+    margin-bottom:5px;
+}
+
+.reference{
+    font-size:20px;
+    font-weight:800;
+    letter-spacing:2px;
+}
+
+.ticket-body{
+    padding:30px;
+}
+
+.airline{
+    color:#687386;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:22px;
+}
+
+.route{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:center;
+    gap:25px;
+    margin-bottom:30px;
+}
+
+.city{
+    font-size:30px;
+    font-weight:800;
+}
+
+.city:last-child{
+    text-align:right;
+}
+
+.time{
+    color:#6f7b8e;
+    font-size:13px;
+    margin-top:7px;
+}
+
+.arrow{
+    width:70px;
+    height:2px;
+    background:#dce3ed;
+    position:relative;
+}
+
+.arrow::after{
+    content:"✈";
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    background:#fff;
+    padding:0 8px;
+    color:#1769ff;
+    font-size:18px;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    border-top:1px solid #e7ebf1;
+    border-bottom:1px solid #e7ebf1;
+    margin-bottom:25px;
+}
+
+.info{
+    padding:18px 12px;
+    border-right:1px solid #e7ebf1;
+}
+
+.info:last-child{
+    border-right:none;
+}
+
+.info-label{
+    color:#8791a1;
+    font-size:11px;
+    text-transform:uppercase;
+    margin-bottom:7px;
+    font-weight:700;
+}
+
+.info-value{
+    font-size:14px;
+    font-weight:800;
+    word-break:break-word;
+}
+
+.passenger-box{
+    background:#f6f8fb;
+    border-radius:13px;
+    padding:18px;
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:15px;
+}
+
+.passenger-item span{
+    display:block;
+    color:#8791a1;
+    font-size:11px;
+    text-transform:uppercase;
+    margin-bottom:6px;
+}
+
+.passenger-item strong{
+    font-size:14px;
+}
+
+.ticket-bottom{
+    border-top:2px dashed #dbe2ec;
+    padding:25px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.total-label{
+    color:#748094;
+    font-size:13px;
+}
+
+.total-price{
+    font-size:27px;
+    font-weight:800;
+    margin-top:5px;
+}
+
+.payment{
+    text-align:right;
+}
+
+.payment span{
+    color:#7c8798;
+    font-size:12px;
+}
+
+.payment strong{
+    display:block;
+    color:#1c9b55;
+    margin-top:5px;
+}
+
+.actions{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    margin-top:25px;
+}
+
+.btn{
+    border:none;
+    border-radius:10px;
+    padding:14px 22px;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-block;
+}
+
+.primary{
+    background:#1769ff;
+    color:#fff;
+}
+
+.primary:hover{
+    background:#0d56d8;
+}
+
+.secondary{
+    background:#fff;
+    color:#1769ff;
+    border:1px solid #cfd9e7;
+}
+
+.secondary:hover{
+    background:#f4f7fb;
+}
+
+.notice{
+    margin-top:25px;
+    padding:15px;
+    border-radius:10px;
+    background:#fff8e7;
+    border:1px solid #f1dfaa;
+    color:#806a25;
+    font-size:12px;
+    line-height:1.6;
+    text-align:center;
+}
+
+footer{
+    background:#111827;
+    color:#9ca3af;
+    text-align:center;
+    padding:25px;
+    font-size:12px;
+}
+
+@media(max-width:700px){
+
+    .nav{
+        display:none;
+    }
+
+    header{
+        padding:0 5%;
+    }
+
+    .container{
+        width:94%;
+        margin-top:30px;
+    }
+
+    .ticket-top{
+        padding:20px;
+    }
+
+    .ticket-body{
+        padding:20px;
+    }
+
+    .route{
+        grid-template-columns:1fr;
+        gap:12px;
+    }
+
+    .city,
+    .city:last-child{
+        text-align:center;
+    }
+
+    .arrow{
+        margin:auto;
+        width:100px;
+    }
+
+    .info-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .info{
+        border-bottom:1px solid #e7ebf1;
+    }
+
+    .info:nth-child(2){
+        border-right:none;
+    }
+
+    .passenger-box{
+        grid-template-columns:1fr;
+    }
+
+    .ticket-bottom{
+        flex-direction:column;
+        gap:20px;
+        align-items:flex-start;
+    }
+
+    .payment{
+        text-align:left;
+    }
+
+    .actions{
+        flex-direction:column;
+    }
+
+    .btn{
+        width:100%;
+        text-align:center;
+    }
+
+    .success h1{
+        font-size:27px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Sky<span>Book</span>
+    </div>
+
+    <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="flights.html">Flights</a>
+        <a href="manage-booking.html">Manage Booking</a>
+    </nav>
+
+</header>
+
+<main class="container">
+
+    <section class="success">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <h1>Booking Confirmed!</h1>
+
+        <p>
+            Your SkyBook reservation has been successfully created.
+        </p>
+
+    </section>
+
+    <section class="ticket">
+
+        <div class="ticket-top">
+
+            <div class="ticket-brand">
+                SkyBook
+            </div>
+
+            <div>
+
+                <div class="ticket-label">
+                    BOOKING REFERENCE
+                </div>
+
+                <div class="reference" id="reference">
+                    SB8K4P2
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="ticket-body">
+
+            <div class="airline" id="airline">
+                Sky Airways
+            </div>
+
+            <div class="route">
+
+                <div>
+
+                    <div class="city" id="fromCity">
+                        KBL
+                    </div>
+
+                    <div class="time">
+                        Departure:
+                        <strong id="departure">08:30</strong>
+                    </div>
+
+                </div>
+
+                <div class="arrow"></div>
+
+                <div>
+
+                    <div class="city" id="toCity">
+                        DXB
+                    </div>
+
+                    <div class="time">
+                        Arrival:
+                        <strong id="arrival">10:45</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="info-grid">
+
+                <div class="info">
+
+                    <div class="info-label">
+                        Date
+                    </div>
+
+                    <div class="info-value" id="flightDate">
+                        ---
+                    </div>
+
+                </div>
+
+                <div class="info">
+
+                    <div class="info-label">
+                        Seat
+                    </div>
+
+                    <div class="info-value" id="seat">
+                        ---
+                    </div>
+
+                </div>
+
+                <div class="info">
+
+                    <div class="info-label">
+                        Passengers
+                    </div>
+
+                    <div class="info-value" id="passengers">
+                        1
+                    </div>
+
+                </div>
+
+                <div class="info">
+
+                    <div class="info-label">
+                        Class
+                    </div>
+
+                    <div class="info-value" id="cabin">
+                        Economy
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="passenger-box">
+
+                <div class="passenger-item">
+
+                    <span>
+                        Passenger
+                    </span>
+
+                    <strong id="passenger">
+                        ---
+                    </strong>
+
+                </div>
+
+                <div class="passenger-item">
+
+                    <span>
+                        Email
+                    </span>
+
+                    <strong id="email">
+                        ---
+                    </strong>
+
+                </div>
+
+                <div class="passenger-item">
+
+                    <span>
+                        Payment
+                    </span>
+
+                    <strong id="paymentStatus">
+                        Completed
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="ticket-bottom">
+
+            <div>
+
+                <div class="total-label">
+                    Total Fare
+                </div>
+
+                <div class="total-price" id="price">
+                    $0
+                </div>
+
+            </div>
+
+            <div class="payment">
+
+                <span>
+                    Payment Method
+                </span>
+
+                <strong id="paymentMethod">
+                    Demo Payment
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="actions">
+
+        <button
+            class="btn primary"
+            onclick="window.print()"
+        >
+            🖨 Print / Save Ticket
+        </button>
+
+        <a
+            href="manage-booking.html"
+            class="btn secondary"
+        >
+            Manage Booking
+        </a>
+
+        <a
+            href="index.html"
+            class="btn secondary"
+        >
+            Back to Home
+        </a>
+
+    </div>
+
+    <div class="notice">
+
+        <strong>Demo Website</strong><br>
+
+        This is a flight-booking platform demonstration.
+        The booking, payment and ticket shown here are simulated and are not real airline reservations.
+
+    </div>
+
+</main>
+
+<footer>
+
+    © 2026 SkyBook. Flight Booking Platform Demo.
+
+</footer>
+
+<script>
+
+const reference = "SB8K4P2";
+
+localStorage.setItem(
+    "booking_reference",
+    reference
+);
+
+const fromCity =
+    localStorage.getItem("flight_from") || "Kabul";
+
+const toCity =
+    localStorage.getItem("flight_to") || "Dubai";
+
+const airline =
+    localStorage.getItem("selected_airline") || "Sky Airways";
+
+const flightDate =
+    localStorage.getItem("flight_date") || "Not selected";
+
+const departure =
+    localStorage.getItem("selected_departure") || "08:30";
+
+const arrival =
+    localStorage.getItem("selected_arrival") || "10:45";
+
+const passengers =
+    localStorage.getItem("flight_passengers") || "1";
+
+const price =
+    localStorage.getItem("selected_price") || "249";
+
+const seat =
+    localStorage.getItem("selected_seat") || "Not selected";
+
+const firstName =
+    localStorage.getItem("passenger_first_name") || "";
+
+const lastName =
+    localStorage.getItem("passenger_last_name") || "";
+
+const email =
+    localStorage.getItem("passenger_email") || "Not provided";
+
+const paymentStatus =
+    localStorage.getItem("payment_status") ||
+    "Demo Payment Completed";
+
+const paymentMethod =
+    localStorage.getItem("payment_method") ||
+    "Demo Payment";
+
+document.getElementById("reference").textContent =
+    reference;
+
+document.getElementById("fromCity").textContent =
+    fromCity;
+
+document.getElementById("toCity").textContent =
+    toCity;
+
+document.getElementById("airline").textContent =
+    airline;
+
+document.getElementById("flightDate").textContent =
+    flightDate;
+
+document.getElementById("departure").textContent =
+    departure;
+
+document.getElementById("arrival").textContent =
+    arrival;
+
+document.getElementById("passengers").textContent =
+    passengers;
+
+document.getElementById("seat").textContent =
+    seat;
+
+document.getElementById("passenger").textContent =
+    (firstName + " " + lastName).trim()
+    || "Passenger";
+
+document.getElementById("email").textContent =
+    email;
+
+document.getElementById("price").textContent =
+    "$" + price;
+
+document.getElementById("paymentStatus").textContent =
+    paymentStatus;
+
+document.getElementById("paymentMethod").textContent =
+    paymentMethod;
+
+</script>
+
+</body>
+</html>
