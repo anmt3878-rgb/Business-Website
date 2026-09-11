@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Seat Selection | SkyBook</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+}
+
+header{
+    height:72px;
+    background:#ffffff;
+    border-bottom:1px solid #e5e9f2;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 7%;
+}
+
+.logo{
+    font-size:25px;
+    font-weight:800;
+    color:#1769ff;
+}
+
+.logo span{
+    color:#111827;
+}
+
+.nav{
+    display:flex;
+    gap:28px;
+}
+
+.nav a{
+    text-decoration:none;
+    color:#596579;
+    font-size:14px;
+    font-weight:600;
+}
+
+.nav a:hover{
+    color:#1769ff;
+}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:35px auto 60px;
+}
+
+.progress{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-bottom:35px;
+}
+
+.step{
+    display:flex;
+    align-items:center;
+    color:#9aa4b5;
+    font-size:13px;
+    font-weight:700;
+}
+
+.circle{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#e4e9f1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-right:8px;
+}
+
+.step.active{
+    color:#1769ff;
+}
+
+.step.active .circle{
+    background:#1769ff;
+    color:white;
+}
+
+.line{
+    width:70px;
+    height:2px;
+    background:#dce2eb;
+    margin:0 12px;
+}
+
+.page-title{
+    margin-bottom:25px;
+}
+
+.page-title h1{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.page-title p{
+    color:#687386;
+}
+
+.layout{
+    display:grid;
+    grid-template-columns:1fr 360px;
+    gap:25px;
+}
+
+.card{
+    background:white;
+    border-radius:18px;
+    border:1px solid #e3e8f0;
+    box-shadow:0 8px 25px rgba(20,40,80,.05);
+}
+
+.seat-card{
+    padding:30px;
+}
+
+.seat-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.seat-header h2{
+    font-size:21px;
+}
+
+.seat-header p{
+    color:#758094;
+    font-size:13px;
+    margin-top:5px;
+}
+
+.legend{
+    display:flex;
+    gap:18px;
+    flex-wrap:wrap;
+    margin-bottom:28px;
+}
+
+.legend-item{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:13px;
+    color:#657084;
+}
+
+.legend-box{
+    width:18px;
+    height:18px;
+    border-radius:5px;
+    border:1px solid #cfd7e4;
+}
+
+.available{
+    background:#ffffff;
+}
+
+.selected{
+    background:#1769ff !important;
+    border-color:#1769ff !important;
+    color:#fff !important;
+}
+
+.occupied{
+    background:#dce2ea !important;
+    border-color:#dce2ea !important;
+    color:#8993a3 !important;
+}
+
+.aircraft{
+    max-width:480px;
+    margin:auto;
+    background:#f7f9fc;
+    border:1px solid #e0e6ef;
+    border-radius:150px 150px 30px 30px;
+    padding:35px 30px 30px;
+}
+
+.cockpit{
+    text-align:center;
+    color:#8a95a7;
+    font-size:12px;
+    font-weight:700;
+    padding-bottom:22px;
+    border-bottom:1px dashed #d3dae5;
+    margin-bottom:22px;
+}
+
+.seat-row{
+    display:grid;
+    grid-template-columns:35px 1fr 1fr 25px 1fr 1fr;
+    gap:9px;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.row-number{
+    font-size:12px;
+    color:#8791a1;
+    text-align:center;
+    font-weight:700;
+}
+
+.aisle{
+    text-align:center;
+    color:#b1b9c7;
+    font-size:11px;
+}
+
+.seat{
+    height:43px;
+    border:1px solid #cfd7e4;
+    border-radius:8px;
+    background:white;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:700;
+    color:#536074;
+    transition:.2s;
+}
+
+.seat:hover:not(.occupied){
+    border-color:#1769ff;
+    transform:translateY(-2px);
+}
+
+.seat.selected{
+    box-shadow:0 5px 12px rgba(23,105,255,.25);
+}
+
+.exit{
+    text-align:center;
+    font-size:10px;
+    color:#9aa4b4;
+    margin:18px 0;
+}
+
+.summary{
+    padding:25px;
+    height:max-content;
+    position:sticky;
+    top:20px;
+}
+
+.summary h2{
+    font-size:20px;
+    margin-bottom:22px;
+}
+
+.route{
+    background:#f5f8fc;
+    border-radius:12px;
+    padding:16px;
+    margin-bottom:18px;
+}
+
+.route-title{
+    font-size:13px;
+    color:#7b8698;
+    margin-bottom:10px;
+}
+
+.route-main{
+    font-size:17px;
+    font-weight:800;
+}
+
+.details{
+    border-top:1px solid #e8ecf2;
+}
+
+.detail{
+    display:flex;
+    justify-content:space-between;
+    padding:12px 0;
+    border-bottom:1px solid #eef1f5;
+    font-size:13px;
+}
+
+.detail span:first-child{
+    color:#7a8597;
+}
+
+.detail span:last-child{
+    font-weight:700;
+    text-align:right;
+}
+
+.selected-seat{
+    background:#edf4ff;
+    border:1px solid #cfe0ff;
+    border-radius:12px;
+    padding:16px;
+    margin:20px 0;
+    text-align:center;
+}
+
+.selected-seat small{
+    color:#718096;
+    display:block;
+    margin-bottom:6px;
+}
+
+.selected-seat strong{
+    font-size:25px;
+    color:#1769ff;
+}
+
+.price{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:20px;
+    padding-top:20px;
+    border-top:1px solid #e5e9f0;
+}
+
+.price span{
+    color:#687386;
+}
+
+.price strong{
+    font-size:25px;
+}
+
+.btn{
+    width:100%;
+    border:none;
+    background:#1769ff;
+    color:white;
+    padding:15px;
+    border-radius:10px;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    margin-top:20px;
+}
+
+.btn:hover{
+    background:#0d56d8;
+}
+
+.btn:disabled{
+    background:#b8c2d2;
+    cursor:not-allowed;
+}
+
+.back{
+    display:block;
+    text-align:center;
+    margin-top:15px;
+    color:#1769ff;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
+}
+
+.notice{
+    margin-top:20px;
+    padding:13px;
+    background:#fff8e7;
+    border:1px solid #f5df9c;
+    color:#806a25;
+    border-radius:10px;
+    font-size:12px;
+    line-height:1.6;
+}
+
+footer{
+    background:#111827;
+    color:#9ca3af;
+    text-align:center;
+    padding:25px;
+    font-size:12px;
+}
+
+@media(max-width:850px){
+
+    header{
+        padding:0 5%;
+    }
+
+    .nav{
+        display:none;
+    }
+
+    .layout{
+        grid-template-columns:1fr;
+    }
+
+    .summary{
+        position:static;
+    }
+}
+
+@media(max-width:520px){
+
+    .container{
+        width:94%;
+        margin-top:25px;
+    }
+
+    .progress{
+        transform:scale(.82);
+        margin-left:-35px;
+        margin-right:-35px;
+    }
+
+    .line{
+        width:35px;
+        margin:0 5px;
+    }
+
+    .seat-card{
+        padding:18px 12px;
+    }
+
+    .aircraft{
+        padding:28px 10px 20px;
+    }
+
+    .seat-row{
+        grid-template-columns:25px 1fr 1fr 16px 1fr 1fr;
+        gap:5px;
+    }
+
+    .seat{
+        height:39px;
+        font-size:10px;
+    }
+
+    .page-title h1{
+        font-size:25px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">Sky<span>Book</span></div>
+
+    <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="flights.html">Flights</a>
+        <a href="manage-booking.html">Manage Booking</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <div class="progress">
+
+        <div class="step active">
+            <div class="circle">✓</div>
+            Flight
+        </div>
+
+        <div class="line"></div>
+
+        <div class="step active">
+            <div class="circle">✓</div>
+            Passenger
+        </div>
+
+        <div class="line"></div>
+
+        <div class="step active">
+            <div class="circle">3</div>
+            Seat
+        </div>
+
+        <div class="line"></div>
+
+        <div class="step">
+            <div class="circle">4</div>
+            Payment
+        </div>
+
+    </div>
+
+    <div class="page-title">
+        <h1>Select Your Seat</h1>
+        <p>Choose your preferred seat for a more comfortable journey.</p>
+    </div>
+
+    <div class="layout">
+
+        <section class="card seat-card">
+
+            <div class="seat-header">
+                <div>
+                    <h2>Aircraft Seat Map</h2>
+                    <p>Select one available seat below.</p>
+                </div>
+            </div>
+
+            <div class="legend">
+
+                <div class="legend-item">
+                    <div class="legend-box available"></div>
+                    Available
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-box selected"></div>
+                    Selected
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-box occupied"></div>
+                    Occupied
+                </div>
+
+            </div>
+
+            <div class="aircraft">
+
+                <div class="cockpit">
+                    ✈ FRONT OF AIRCRAFT
+                </div>
+
+                <div id="seatMap"></div>
+
+                <div class="exit">
+                    EMERGENCY EXIT
+                </div>
+
+            </div>
+
+        </section>
+
+        <aside class="card summary">
+
+            <h2>Booking Summary</h2>
+
+            <div class="route">
+
+                <div class="route-title">Your Flight</div>
+
+                <div class="route-main">
+                    <span id="fromCity">---</span>
+                    →
+                    <span id="toCity">---</span>
+                </div>
+
+            </div>
+
+            <div class="details">
+
+                <div class="detail">
+                    <span>Airline</span>
+                    <span id="airline">---</span>
+                </div>
+
+                <div class="detail">
+                    <span>Date</span>
+                    <span id="flightDate">---</span>
+                </div>
+
+                <div class="detail">
+                    <span>Departure</span>
+                    <span id="departure">---</span>
+                </div>
+
+                <div class="detail">
+                    <span>Arrival</span>
+                    <span id="arrival">---</span>
+                </div>
+
+                <div class="detail">
+                    <span>Passenger</span>
+                    <span id="passenger">---</span>
+                </div>
+
+                <div class="detail">
+                    <span>Passengers</span>
+                    <span id="passengers">---</span>
+                </div>
+
+            </div>
+
+            <div class="selected-seat">
+
+                <small>Selected Seat</small>
+
+                <strong id="selectedSeat">
+                    Not Selected
+                </strong>
+
+            </div>
+
+            <div class="price">
+
+                <span>Total Fare</span>
+
+                <strong id="price">
+                    $0
+                </strong>
+
+            </div>
+
+            <button class="btn" id="continueBtn" disabled>
+                Continue to Payment →
+            </button>
+
+            <a href="passenger.html" class="back">
+                ← Back to Passenger Details
+            </a>
+
+            <div class="notice">
+                <strong>Demo Website</strong><br>
+                This seat selection is part of the SkyBook demonstration and does not represent real airline inventory.
+            </div>
+
+        </aside>
+
+    </div>
+
+</main>
+
+<footer>
+    © 2026 SkyBook. Flight Booking Platform Demo.
+</footer>
+
+<script>
+
+const fromCity = localStorage.getItem("flight_from") || "Kabul";
+const toCity = localStorage.getItem("flight_to") || "Dubai";
+
+const airline = localStorage.getItem("selected_airline") || "Sky Airways";
+const flightDate = localStorage.getItem("flight_date") || "Not selected";
+const departure = localStorage.getItem("selected_departure") || "08:30";
+const arrival = localStorage.getItem("selected_arrival") || "10:45";
+const price = localStorage.getItem("selected_price") || "249";
+
+const firstName = localStorage.getItem("passenger_first_name") || "";
+const lastName = localStorage.getItem("passenger_last_name") || "";
+
+const passengers = localStorage.getItem("flight_passengers") || "1";
+
+document.getElementById("fromCity").textContent = fromCity;
+document.getElementById("toCity").textContent = toCity;
+
+document.getElementById("airline").textContent = airline;
+document.getElementById("flightDate").textContent = flightDate;
+document.getElementById("departure").textContent = departure;
+document.getElementById("arrival").textContent = arrival;
+
+document.getElementById("passenger").textContent =
+    (firstName + " " + lastName).trim() || "Passenger";
+
+document.getElementById("passengers").textContent = passengers;
+
+document.getElementById("price").textContent = "$" + price;
+
+const seatMap = document.getElementById("seatMap");
+const selectedSeatText = document.getElementById("selectedSeat");
+const continueBtn = document.getElementById("continueBtn");
+
+let selectedSeat =
+    localStorage.getItem("selected_seat") || "";
+
+const occupiedSeats = [
+    "1A",
+    "1D",
+    "2B",
+    "3C",
+    "4A",
+    "5D",
+    "6B",
+    "7C"
+];
+
+for(let row = 1; row <= 8; row++){
+
+    const rowElement = document.createElement("div");
+
+    rowElement.className = "seat-row";
+
+    const rowNumber = document.createElement("div");
+
+    rowNumber.className = "row-number";
+
+    rowNumber.textContent = row;
+
+    rowElement.appendChild(rowNumber);
+
+    const letters = ["A","B","aisle","C","D"];
+
+    letters.forEach(letter => {
+
+        if(letter === "aisle"){
+
+            const aisle = document.createElement("div");
+
+            aisle.className = "aisle";
+
+            aisle.textContent = "·";
+
+            rowElement.appendChild(aisle);
+
+            return;
+        }
+
+        const seatNumber = row + letter;
+
+        const button = document.createElement("button");
+
+        button.className = "seat";
+
+        button.textContent = seatNumber;
+
+        if(occupiedSeats.includes(seatNumber)){
+
+            button.classList.add("occupied");
+
+            button.disabled = true;
+
+        }else{
+
+            button.classList.add("available");
+
+            button.addEventListener("click", function(){
+
+                document.querySelectorAll(".seat.selected")
+                    .forEach(seat => {
+                        seat.classList.remove("selected");
+                    });
+
+                button.classList.add("selected");
+
+                selectedSeat = seatNumber;
+
+                localStorage.setItem(
+                    "selected_seat",
+                    selectedSeat
+                );
+
+                selectedSeatText.textContent =
+                    selectedSeat;
+
+                continueBtn.disabled = false;
+
+            });
+        }
+
+        if(seatNumber === selectedSeat &&
+           !occupiedSeats.includes(seatNumber)){
+
+            button.classList.add("selected");
+
+            selectedSeatText.textContent =
+                selectedSeat;
+
+            continueBtn.disabled = false;
+        }
+
+        rowElement.appendChild(button);
+
+    });
+
+    seatMap.appendChild(rowElement);
+}
+
+continueBtn.addEventListener("click", function(){
+
+    if(!selectedSeat){
+
+        alert("Please select a seat first.");
+
+        return;
+    }
+
+    localStorage.setItem(
+        "selected_seat",
+        selectedSeat
+    );
+
+    window.location.href = "payment.html";
+
+});
+
+</script>
+
+</body>
+</html>
