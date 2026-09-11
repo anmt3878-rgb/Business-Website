@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Payment | SkyBook</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+}
+
+header{
+    height:72px;
+    background:#fff;
+    border-bottom:1px solid #e5e9f2;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 7%;
+}
+
+.logo{
+    font-size:25px;
+    font-weight:800;
+    color:#1769ff;
+}
+
+.logo span{
+    color:#111827;
+}
+
+.nav{
+    display:flex;
+    gap:28px;
+}
+
+.nav a{
+    text-decoration:none;
+    color:#596579;
+    font-size:14px;
+    font-weight:600;
+}
+
+.nav a:hover{
+    color:#1769ff;
+}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:35px auto 60px;
+}
+
+.progress{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-bottom:35px;
+}
+
+.step{
+    display:flex;
+    align-items:center;
+    color:#9aa4b5;
+    font-size:13px;
+    font-weight:700;
+}
+
+.circle{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#e4e9f1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-right:8px;
+}
+
+.step.active{
+    color:#1769ff;
+}
+
+.step.active .circle{
+    background:#1769ff;
+    color:white;
+}
+
+.line{
+    width:70px;
+    height:2px;
+    background:#1769ff;
+    margin:0 12px;
+}
+
+.title{
+    margin-bottom:25px;
+}
+
+.title h1{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.title p{
+    color:#687386;
+}
+
+.layout{
+    display:grid;
+    grid-template-columns:1fr 360px;
+    gap:25px;
+}
+
+.card{
+    background:#fff;
+    border:1px solid #e3e8f0;
+    border-radius:18px;
+    box-shadow:0 8px 25px rgba(20,40,80,.05);
+}
+
+.payment-card{
+    padding:30px;
+}
+
+.payment-card h2{
+    font-size:21px;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    color:#758094;
+    font-size:13px;
+    margin-bottom:25px;
+}
+
+.methods{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:28px;
+}
+
+.method{
+    border:1px solid #dce2eb;
+    border-radius:12px;
+    padding:15px 10px;
+    text-align:center;
+    cursor:pointer;
+    background:#fff;
+    font-size:13px;
+    font-weight:700;
+    color:#536074;
+}
+
+.method:hover{
+    border-color:#1769ff;
+}
+
+.method.active{
+    border:2px solid #1769ff;
+    background:#edf4ff;
+    color:#1769ff;
+}
+
+.method-icon{
+    display:block;
+    font-size:25px;
+    margin-bottom:7px;
+}
+
+.form-group{
+    margin-bottom:18px;
+}
+
+.form-group label{
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.form-group input{
+    width:100%;
+    padding:14px;
+    border:1px solid #d6dde8;
+    border-radius:9px;
+    font-size:14px;
+    outline:none;
+}
+
+.form-group input:focus{
+    border-color:#1769ff;
+    box-shadow:0 0 0 3px rgba(23,105,255,.08);
+}
+
+.form-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.card-input{
+    position:relative;
+}
+
+.card-brand{
+    position:absolute;
+    right:12px;
+    top:39px;
+    color:#8b95a6;
+    font-size:12px;
+    font-weight:700;
+}
+
+.secure{
+    background:#f3faf6;
+    border:1px solid #cfe9d8;
+    color:#34734a;
+    border-radius:10px;
+    padding:13px;
+    font-size:12px;
+    margin-top:5px;
+    line-height:1.6;
+}
+
+.wallet-box,
+.bank-box{
+    display:none;
+}
+
+.wallet-box.active,
+.bank-box.active{
+    display:block;
+}
+
+.card-box{
+    display:block;
+}
+
+.card-box.hidden{
+    display:none;
+}
+
+.btn{
+    width:100%;
+    border:0;
+    background:#1769ff;
+    color:white;
+    padding:15px;
+    border-radius:10px;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    margin-top:22px;
+}
+
+.btn:hover{
+    background:#0d56d8;
+}
+
+.summary{
+    padding:25px;
+    height:max-content;
+    position:sticky;
+    top:20px;
+}
+
+.summary h2{
+    font-size:20px;
+    margin-bottom:20px;
+}
+
+.route{
+    background:#f5f8fc;
+    border-radius:12px;
+    padding:16px;
+    margin-bottom:18px;
+}
+
+.route-label{
+    color:#7b8698;
+    font-size:12px;
+    margin-bottom:9px;
+}
+
+.route-main{
+    font-size:18px;
+    font-weight:800;
+}
+
+.details{
+    border-top:1px solid #e7ebf1;
+}
+
+.detail{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    padding:12px 0;
+    border-bottom:1px solid #eef1f5;
+    font-size:13px;
+}
+
+.detail span:first-child{
+    color:#788396;
+}
+
+.detail span:last-child{
+    font-weight:700;
+    text-align:right;
+}
+
+.seat{
+    background:#edf4ff;
+    border:1px solid #cfe0ff;
+    border-radius:10px;
+    padding:13px;
+    margin-top:18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.seat span{
+    color:#718096;
+    font-size:13px;
+}
+
+.seat strong{
+    color:#1769ff;
+    font-size:18px;
+}
+
+.total{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-top:1px solid #e5e9f0;
+    margin-top:20px;
+    padding-top:20px;
+}
+
+.total span{
+    color:#687386;
+}
+
+.total strong{
+    font-size:25px;
+}
+
+.notice{
+    margin-top:20px;
+    background:#fff8e7;
+    border:1px solid #f1dfaa;
+    color:#806a25;
+    padding:13px;
+    border-radius:10px;
+    font-size:12px;
+    line-height:1.6;
+}
+
+.back{
+    display:block;
+    text-align:center;
+    margin-top:15px;
+    color:#1769ff;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
+}
+
+footer{
+    background:#111827;
+    color:#9ca3af;
+    text-align:center;
+    padding:25px;
+    font-size:12px;
+}
+
+@media(max-width:850px){
+
+    .nav{
+        display:none;
+    }
+
+    header{
+        padding:0 5%;
+    }
+
+    .layout{
+        grid-template-columns:1fr;
+    }
+
+    .summary{
+        position:static;
+    }
+}
+
+@media(max-width:550px){
+
+    .container{
+        width:94%;
+        margin-top:25px;
+    }
+
+    .progress{
+        transform:scale(.82);
+        margin-left:-35px;
+        margin-right:-35px;
+    }
+
+    .line{
+        width:35px;
+        margin:0 5px;
+    }
+
+    .payment-card{
+        padding:20px 15px;
+    }
+
+    .methods{
+        grid-template-columns:1fr;
+    }
+
+    .form-row{
+        grid-template-columns:1fr;
+    }
+
+    .title h1{
+        font-size:25px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Sky<span>Book</span>
+    </div>
+
+    <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="flights.html">Flights</a>
+        <a href="manage-booking.html">Manage Booking</a>
+    </nav>
+
+</header>
+
+<main class="container">
+
+    <div class="progress">
+
+        <div class="step active">
+            <div class="circle">✓</div>
+            Flight
+        </div>
+
+        <div class="line"></div>
+
+        <div class="step active">
+            <div class="circle">✓</div>
+            Passenger
+        </div>
+
+        <div class="line"></div>
+
+        <div class="step active">
+            <div class="circle">✓</div>
+            Seat
+        </div>
+
+        <div class="line"></div>
+
+        <div class="step active">
+            <div class="circle">4</div>
+            Payment
+        </div>
+
+    </div>
+
+    <div class="title">
+
+        <h1>Secure Payment</h1>
+
+        <p>
+            Complete your payment details to confirm your booking.
+        </p>
+
+    </div>
+
+    <div class="layout">
+
+        <section class="card payment-card">
+
+            <h2>Payment Method</h2>
+
+            <p class="subtitle">
+                Choose how you would like to pay.
+            </p>
+
+            <div class="methods">
+
+                <div class="method active" data-method="card">
+
+                    <span class="method-icon">💳</span>
+
+                    Credit / Debit Card
+
+                </div>
+
+                <div class="method" data-method="wallet">
+
+                    <span class="method-icon">📱</span>
+
+                    Digital Wallet
+
+                </div>
+
+                <div class="method" data-method="bank">
+
+                    <span class="method-icon">🏦</span>
+
+                    Bank Transfer
+
+                </div>
+
+            </div>
+
+            <form id="paymentForm">
+
+                <div class="card-box" id="cardBox">
+
+                    <div class="form-group">
+
+                        <label>
+                            Cardholder Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="cardName"
+                            placeholder="John Smith"
+                        >
+
+                    </div>
+
+                    <div class="form-group card-input">
+
+                        <label>
+                            Card Number
+                        </label>
+
+                        <input
+                            type="text"
+                            id="cardNumber"
+                            maxlength="19"
+                            placeholder="1234 5678 9012 3456"
+                        >
+
+                        <span class="card-brand">
+                            CARD
+                        </span>
+
+                    </div>
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label>
+                                Expiry Date
+                            </label>
+
+                            <input
+                                type="text"
+                                id="expiry"
+                                maxlength="5"
+                                placeholder="MM/YY"
+                            >
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>
+                                CVV
+                            </label>
+
+                            <input
+                                type="password"
+                                id="cvv"
+                                maxlength="4"
+                                placeholder="123"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="wallet-box" id="walletBox">
+
+                    <div class="form-group">
+
+                        <label>
+                            Wallet Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="walletEmail"
+                            placeholder="your@email.com"
+                        >
+
+                    </div>
+
+                    <div class="secure">
+                        📱 Digital wallet payment is available for demonstration purposes.
+                    </div>
+
+                </div>
+
+                <div class="bank-box" id="bankBox">
+
+                    <div class="form-group">
+
+                        <label>
+                            Account Holder Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="bankName"
+                            placeholder="John Smith"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Bank Account Number
+                        </label>
+
+                        <input
+                            type="text"
+                            id="bankNumber"
+                            placeholder="Enter account number"
+                        >
+
+                    </div>
+
+                    <div class="secure">
+                        🏦 Bank transfer is simulated for this demo website.
+                    </div>
+
+                </div>
+
+                <div class="secure">
+
+                    🔒 <strong>Demo Secure Payment</strong><br>
+
+                    This is a demonstration website.
+                    No real payment will be processed or charged.
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn"
+                >
+                    Pay & Confirm Booking →
+                </button>
+
+            </form>
+
+            <a
+                href="seat.html"
+                class="back"
+            >
+                ← Back to Seat Selection
+            </a>
+
+        </section>
+
+        <aside class="card summary">
+
+            <h2>Booking Summary</h2>
+
+            <div class="route">
+
+                <div class="route-label">
+                    Your Flight
+                </div>
+
+                <div class="route-main">
+
+                    <span id="fromCity">---</span>
+
+                    →
+
+                    <span id="toCity">---</span>
+
+                </div>
+
+            </div>
+
+            <div class="details">
+
+                <div class="detail">
+                    <span>Airline</span>
+                    <span id="airline">---</span>
+                </div>
+
+                <div class="detail">
+                    <span>Date</span>
+                    <span id="flightDate">---</span>
+                </div>
+
+                <div class="detail">
+                    <span>Departure</span>
+                    <span id="departure">---</span>
+                </div>
+
+                <div class="detail">
+                    <span>Arrival</span>
+                    <span id="arrival">---</span>
+                </div>
+
+                <div class="detail">
+                    <span>Passenger</span>
+                    <span id="passenger">---</span>
+                </div>
+
+                <div class="detail">
+                    <span>Passengers</span>
+                    <span id="passengers">---</span>
+                </div>
+
+            </div>
+
+            <div class="seat">
+
+                <span>
+                    Selected Seat
+                </span>
+
+                <strong id="selectedSeat">
+                    ---
+                </strong>
+
+            </div>
+
+            <div class="total">
+
+                <span>
+                    Total Fare
+                </span>
+
+                <strong id="price">
+                    $0
+                </strong>
+
+            </div>
+
+            <div class="notice">
+
+                <strong>Demo Website</strong><br>
+
+                Payment is simulated.
+                No real money or card transaction will occur.
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</main>
+
+<footer>
+
+    © 2026 SkyBook. Flight Booking Platform Demo.
+
+</footer>
+
+<script>
+
+const fromCity =
+    localStorage.getItem("flight_from") || "Kabul";
+
+const toCity =
+    localStorage.getItem("flight_to") || "Dubai";
+
+const airline =
+    localStorage.getItem("selected_airline") || "Sky Airways";
+
+const flightDate =
+    localStorage.getItem("flight_date") || "Not selected";
+
+const departure =
+    localStorage.getItem("selected_departure") || "08:30";
+
+const arrival =
+    localStorage.getItem("selected_arrival") || "10:45";
+
+const price =
+    localStorage.getItem("selected_price") || "249";
+
+const firstName =
+    localStorage.getItem("passenger_first_name") || "";
+
+const lastName =
+    localStorage.getItem("passenger_last_name") || "";
+
+const passengers =
+    localStorage.getItem("flight_passengers") || "1";
+
+const selectedSeat =
+    localStorage.getItem("selected_seat") || "Not selected";
+
+document.getElementById("fromCity").textContent =
+    fromCity;
+
+document.getElementById("toCity").textContent =
+    toCity;
+
+document.getElementById("airline").textContent =
+    airline;
+
+document.getElementById("flightDate").textContent =
+    flightDate;
+
+document.getElementById("departure").textContent =
+    departure;
+
+document.getElementById("arrival").textContent =
+    arrival;
+
+document.getElementById("passenger").textContent =
+    (firstName + " " + lastName).trim() || "Passenger";
+
+document.getElementById("passengers").textContent =
+    passengers;
+
+document.getElementById("selectedSeat").textContent =
+    selectedSeat;
+
+document.getElementById("price").textContent =
+    "$" + price;
+
+
+/* PAYMENT METHOD */
+
+const methods =
+    document.querySelectorAll(".method");
+
+const cardBox =
+    document.getElementById("cardBox");
+
+const walletBox =
+    document.getElementById("walletBox");
+
+const bankBox =
+    document.getElementById("bankBox");
+
+let selectedMethod = "card";
+
+methods.forEach(function(method){
+
+    method.addEventListener("click", function(){
+
+        methods.forEach(function(item){
+
+            item.classList.remove("active");
+
+        });
+
+        method.classList.add("active");
+
+        selectedMethod =
+            method.dataset.method;
+
+        cardBox.classList.remove("hidden");
+
+        walletBox.classList.remove("active");
+
+        bankBox.classList.remove("active");
+
+        if(selectedMethod === "card"){
+
+            cardBox.classList.remove("hidden");
+
+        }
+
+        if(selectedMethod === "wallet"){
+
+            cardBox.classList.add("hidden");
+
+            walletBox.classList.add("active");
+
+        }
+
+        if(selectedMethod === "bank"){
+
+            cardBox.classList.add("hidden");
+
+            bankBox.classList.add("active");
+
+        }
+
+    });
+
+});
+
+
+/* CARD NUMBER FORMAT */
+
+document
+.getElementById("cardNumber")
+.addEventListener("input", function(){
+
+    let value =
+        this.value.replace(/\D/g,"");
+
+    value =
+        value.substring(0,16);
+
+    let formatted =
+        value.match(/.{1,4}/g);
+
+    this.value =
+        formatted ? formatted.join(" ") : "";
+
+});
+
+
+/* EXPIRY FORMAT */
+
+document
+.getElementById("expiry")
+.addEventListener("input", function(){
+
+    let value =
+        this.value.replace(/\D/g,"");
+
+    value =
+        value.substring(0,4);
+
+    if(value.length >= 3){
+
+        this.value =
+            value.substring(0,2)
+            + "/"
+            + value.substring(2);
+
+    }else{
+
+        this.value = value;
+
+    }
+
+});
+
+
+/* PAYMENT SUBMIT */
+
+document
+.getElementById("paymentForm")
+.addEventListener("submit", function(event){
+
+    event.preventDefault();
+
+    if(selectedMethod === "card"){
+
+        const name =
+            document.getElementById("cardName").value.trim();
+
+        const number =
+            document.getElementById("cardNumber").value.trim();
+
+        const expiry =
+            document.getElementById("expiry").value.trim();
+
+        const cvv =
+            document.getElementById("cvv").value.trim();
+
+        if(!name || !number || !expiry || !cvv){
+
+            alert(
+                "Please complete all card details."
+            );
+
+            return;
+        }
+
+    }
+
+    if(selectedMethod === "wallet"){
+
+        const email =
+            document.getElementById("walletEmail").value.trim();
+
+        if(!email){
+
+            alert(
+                "Please enter your wallet email."
+            );
+
+            return;
+        }
+
+    }
+
+    if(selectedMethod === "bank"){
+
+        const name =
+            document.getElementById("bankName").value.trim();
+
+        const number =
+            document.getElementById("bankNumber").value.trim();
+
+        if(!name || !number){
+
+            alert(
+                "Please complete your bank details."
+            );
+
+            return;
+        }
+
+    }
+
+    localStorage.setItem(
+        "payment_status",
+        "Demo Payment Completed"
+    );
+
+    localStorage.setItem(
+        "payment_method",
+        selectedMethod
+    );
+
+    localStorage.setItem(
+        "booking_time",
+        new Date().toISOString()
+    );
+
+    window.location.href =
+        "confirmation.html";
+
+});
+
+</script>
+
+</body>
+</html>
