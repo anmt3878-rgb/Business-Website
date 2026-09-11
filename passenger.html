@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SkyBook - Passenger Information</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+}
+
+header{
+    background:#071b35;
+    color:white;
+    padding:18px 7%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:26px;
+    font-weight:bold;
+}
+
+.logo span{
+    color:#4da3ff;
+}
+
+nav{
+    display:flex;
+    gap:25px;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    font-size:14px;
+}
+
+.container{
+    max-width:1100px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.progress{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-bottom:35px;
+}
+
+.progress-step{
+    display:flex;
+    align-items:center;
+    color:#98a2b3;
+    font-size:13px;
+}
+
+.circle{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#dbe3ee;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    margin-right:8px;
+}
+
+.active .circle{
+    background:#1677ff;
+    color:white;
+}
+
+.active{
+    color:#071b35;
+    font-weight:bold;
+}
+
+.progress-line{
+    width:70px;
+    height:2px;
+    background:#dbe3ee;
+    margin:0 12px;
+}
+
+.layout{
+    display:grid;
+    grid-template-columns:1fr 330px;
+    gap:25px;
+}
+
+.card{
+    background:white;
+    border-radius:18px;
+    padding:30px;
+    box-shadow:0 6px 25px rgba(0,0,0,.06);
+}
+
+.card h1{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.card-subtitle{
+    color:#667085;
+    font-size:14px;
+    margin-bottom:30px;
+}
+
+.section-title{
+    font-size:18px;
+    margin-bottom:18px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.field{
+    display:flex;
+    flex-direction:column;
+}
+
+.field.full{
+    grid-column:1/-1;
+}
+
+.field label{
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.field input,
+.field select{
+    width:100%;
+    height:48px;
+    border:1px solid #d0d5dd;
+    border-radius:9px;
+    padding:0 13px;
+    font-size:14px;
+    outline:none;
+    background:white;
+}
+
+.field input:focus,
+.field select:focus{
+    border-color:#1677ff;
+}
+
+.note{
+    margin-top:22px;
+    padding:14px;
+    background:#eef6ff;
+    color:#245ea8;
+    border-radius:10px;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.continue{
+    width:100%;
+    margin-top:25px;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#1677ff;
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.continue:hover{
+    background:#0b63d6;
+}
+
+.summary{
+    background:white;
+    border-radius:18px;
+    padding:25px;
+    height:max-content;
+    box-shadow:0 6px 25px rgba(0,0,0,.06);
+    position:sticky;
+    top:25px;
+}
+
+.summary h2{
+    font-size:20px;
+    margin-bottom:20px;
+}
+
+.airline{
+    background:#071b35;
+    color:white;
+    padding:18px;
+    border-radius:12px;
+    margin-bottom:18px;
+}
+
+.airline strong{
+    font-size:18px;
+}
+
+.airline span{
+    display:block;
+    color:#b8c7d9;
+    font-size:12px;
+    margin-top:5px;
+}
+
+.route{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:20px 0;
+}
+
+.route-city{
+    text-align:center;
+}
+
+.route-city strong{
+    display:block;
+    font-size:20px;
+}
+
+.route-city span{
+    color:#667085;
+    font-size:12px;
+}
+
+.arrow{
+    color:#1677ff;
+    font-size:22px;
+}
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    padding:12px 0;
+    border-top:1px solid #eaecf0;
+    font-size:13px;
+}
+
+.summary-row span{
+    color:#667085;
+}
+
+.total{
+    margin-top:10px;
+    padding-top:18px;
+    border-top:2px solid #d0d5dd;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.total span{
+    font-weight:bold;
+}
+
+.total strong{
+    font-size:25px;
+}
+
+.seat-info{
+    background:#f0fdf4;
+    color:#166534;
+    padding:12px;
+    border-radius:9px;
+    margin-top:15px;
+    font-size:13px;
+    display:none;
+}
+
+@media(max-width:850px){
+
+    .layout{
+        grid-template-columns:1fr;
+    }
+
+    .summary{
+        position:static;
+    }
+}
+
+@media(max-width:650px){
+
+    header{
+        padding:16px 5%;
+    }
+
+    nav{
+        gap:10px;
+    }
+
+    nav a{
+        font-size:11px;
+    }
+
+    .container{
+        margin:25px auto;
+        padding:12px;
+    }
+
+    .progress{
+        justify-content:flex-start;
+        overflow-x:auto;
+    }
+
+    .progress-line{
+        width:30px;
+        margin:0 6px;
+    }
+
+    .progress-step{
+        white-space:nowrap;
+    }
+
+    .card{
+        padding:22px 16px;
+    }
+
+    .card h1{
+        font-size:25px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .field.full{
+        grid-column:auto;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        ✈ <span>Sky</span>Book
+    </div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="manage-booking.html">Manage Booking</a>
+    </nav>
+
+</header>
+
+
+<div class="container">
+
+    <!-- PROGRESS -->
+
+    <div class="progress">
+
+        <div class="progress-step">
+
+            <div class="circle">✓</div>
+
+            Flight
+
+        </div>
+
+        <div class="progress-line"></div>
+
+        <div class="progress-step active">
+
+            <div class="circle">2</div>
+
+            Passenger
+
+        </div>
+
+        <div class="progress-line"></div>
+
+        <div class="progress-step">
+
+            <div class="circle">3</div>
+
+            Seat
+
+        </div>
+
+        <div class="progress-line"></div>
+
+        <div class="progress-step">
+
+            <div class="circle">4</div>
+
+            Payment
+
+        </div>
+
+    </div>
+
+
+    <div class="layout">
+
+
+        <!-- FORM -->
+
+        <div class="card">
+
+            <h1>Passenger Information</h1>
+
+            <p class="card-subtitle">
+                Please enter the passenger details exactly
+                as shown on the travel document.
+            </p>
+
+
+            <form id="passengerForm">
+
+
+                <h3 class="section-title">
+                    Personal Information
+                </h3>
+
+
+                <div class="form-grid">
+
+
+                    <div class="field">
+
+                        <label>
+                            First Name *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="firstName"
+                            placeholder="First name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Last Name *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="lastName"
+                            placeholder="Last name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Email Address *
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="you@example.com"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Phone Number *
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="phone"
+                            placeholder="+93 700 000 000"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Date of Birth *
+                        </label>
+
+                        <input
+                            type="date"
+                            id="birthDate"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Nationality *
+                        </label>
+
+                        <select
+                            id="nationality"
+                            required
+                        >
+
+                            <option value="">
+                                Select nationality
+                            </option>
+
+                            <option value="Afghanistan">
+                                Afghanistan
+                            </option>
+
+                            <option value="United States">
+                                United States
+                            </option>
+
+                            <option value="United Arab Emirates">
+                                United Arab Emirates
+                            </option>
+
+                            <option value="United Kingdom">
+                                United Kingdom
+                            </option>
+
+                            <option value="Pakistan">
+                                Pakistan
+                            </option>
+
+                            <option value="India">
+                                India
+                            </option>
+
+                            <option value="Türkiye">
+                                Türkiye
+                            </option>
+
+                            <option value="Canada">
+                                Canada
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+
+                <br>
+
+
+                <h3 class="section-title">
+                    Passport Information
+                </h3>
+
+
+                <div class="form-grid">
+
+
+                    <div class="field">
+
+                        <label>
+                            Passport Number *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="passport"
+                            placeholder="Passport number"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Passport Expiry *
+                        </label>
+
+                        <input
+                            type="date"
+                            id="passportExpiry"
+                            required
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="note">
+
+                    🔒 Your information is used only for this
+                    demo booking flow. This website does not
+                    submit real passport information to an airline.
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="continue"
+                >
+                    Continue to Seat Selection →
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- SUMMARY -->
+
+        <aside class="summary">
+
+            <h2>Flight Summary</h2>
+
+
+            <div class="airline">
+
+                <strong id="airline">
+                    Sky Airways
+                </strong>
+
+                <span>
+                    Selected Flight
+                </span>
+
+            </div>
+
+
+            <div class="route">
+
+                <div class="route-city">
+
+                    <strong id="from">
+                        -
+                    </strong>
+
+                    <span id="departure">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="arrow">
+                    ✈
+                </div>
+
+
+                <div class="route-city">
+
+                    <strong id="to">
+                        -
+                    </strong>
+
+                    <span id="arrival">
+                        -
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>Date</span>
+
+                <strong id="date">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>Passengers</span>
+
+                <strong id="passengers">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>Cabin</span>
+
+                <strong>
+                    Standard
+                </strong>
+
+            </div>
+
+
+            <div
+                class="seat-info"
+                id="seatInfo"
+            >
+                💺 Selected Seat:
+                <strong id="seat">
+                    -
+                </strong>
+            </div>
+
+
+            <div class="total">
+
+                <span>Total</span>
+
+                <strong id="price">
+                    $0
+                </strong>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* LOAD FLIGHT DATA */
+
+const airline =
+    localStorage.getItem("selected_airline")
+    || "Sky Airways";
+
+const from =
+    localStorage.getItem("flight_from")
+    || "-";
+
+const to =
+    localStorage.getItem("flight_to")
+    || "-";
+
+const date =
+    localStorage.getItem("flight_date")
+    || "-";
+
+const departure =
+    localStorage.getItem("selected_departure")
+    || "-";
+
+const arrival =
+    localStorage.getItem("selected_arrival")
+    || "-";
+
+const passengers =
+    localStorage.getItem("flight_passengers")
+    || "1";
+
+const price =
+    localStorage.getItem("selected_price")
+    || "0";
+
+const selectedSeat =
+    localStorage.getItem("selected_seat")
+    || "";
+
+
+/* SHOW SUMMARY */
+
+document.getElementById("airline")
+    .textContent = airline;
+
+document.getElementById("from")
+    .textContent = from;
+
+document.getElementById("to")
+    .textContent = to;
+
+document.getElementById("date")
+    .textContent = date;
+
+document.getElementById("departure")
+    .textContent = departure;
+
+document.getElementById("arrival")
+    .textContent = arrival;
+
+document.getElementById("passengers")
+    .textContent =
+    passengers +
+    (
+        passengers === "1"
+        ? " Passenger"
+        : " Passengers"
+    );
+
+document.getElementById("price")
+    .textContent = "$" + price;
+
+
+/* SHOW SEAT IF ALREADY SELECTED */
+
+if(selectedSeat){
+
+    document.getElementById("seatInfo")
+        .style.display = "block";
+
+    document.getElementById("seat")
+        .textContent = selectedSeat;
+}
+
+
+/* FORM SUBMIT */
+
+document
+.getElementById("passengerForm")
+.addEventListener("submit", function(event){
+
+    event.preventDefault();
+
+
+    const firstName =
+        document.getElementById("firstName")
+        .value.trim();
+
+    const lastName =
+        document.getElementById("lastName")
+        .value.trim();
+
+    const email =
+        document.getElementById("email")
+        .value.trim();
+
+    const phone =
+        document.getElementById("phone")
+        .value.trim();
+
+    const birthDate =
+        document.getElementById("birthDate")
+        .value;
+
+    const nationality =
+        document.getElementById("nationality")
+        .value;
+
+    const passport =
+        document.getElementById("passport")
+        .value.trim();
+
+    const passportExpiry =
+        document.getElementById("passportExpiry")
+        .value;
+
+
+    if(
+        !firstName ||
+        !lastName ||
+        !email ||
+        !phone ||
+        !birthDate ||
+        !nationality ||
+        !passport ||
+        !passportExpiry
+    ){
+
+        alert(
+            "Please complete all required fields."
+        );
+
+        return;
+    }
+
+
+    /* SAVE PASSENGER DATA */
+
+    localStorage.setItem(
+        "passenger_first_name",
+        firstName
+    );
+
+    localStorage.setItem(
+        "passenger_last_name",
+        lastName
+    );
+
+    localStorage.setItem(
+        "passenger_email",
+        email
+    );
+
+    localStorage.setItem(
+        "passenger_phone",
+        phone
+    );
+
+    localStorage.setItem(
+        "passenger_birth_date",
+        birthDate
+    );
+
+    localStorage.setItem(
+        "passenger_nationality",
+        nationality
+    );
+
+    localStorage.setItem(
+        "passenger_passport",
+        passport
+    );
+
+    localStorage.setItem(
+        "passenger_passport_expiry",
+        passportExpiry
+    );
+
+
+    /* GO TO SEAT SELECTION */
+
+    window.location.href =
+        "seat.html";
+
+});
+
+</script>
+
+</body>
+</html>
