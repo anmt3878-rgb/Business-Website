@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SkyBook - Available Flights</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+}
+
+header{
+    background:#071b35;
+    color:white;
+    padding:18px 7%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:26px;
+    font-weight:bold;
+}
+
+.logo span{
+    color:#4da3ff;
+}
+
+nav{
+    display:flex;
+    gap:25px;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    font-size:14px;
+}
+
+.container{
+    max-width:1200px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.top{
+    margin-bottom:30px;
+}
+
+.top h1{
+    font-size:34px;
+    margin-bottom:10px;
+}
+
+.route{
+    color:#667085;
+    font-size:15px;
+}
+
+.search-summary{
+    background:white;
+    padding:18px 20px;
+    border-radius:14px;
+    margin-top:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,.05);
+}
+
+.summary-item span{
+    display:block;
+    font-size:11px;
+    color:#667085;
+    margin-bottom:5px;
+    text-transform:uppercase;
+}
+
+.summary-item strong{
+    font-size:15px;
+}
+
+.layout{
+    display:grid;
+    grid-template-columns:250px 1fr;
+    gap:25px;
+}
+
+.filters{
+    background:white;
+    border-radius:16px;
+    padding:22px;
+    height:max-content;
+    box-shadow:0 5px 20px rgba(0,0,0,.05);
+}
+
+.filters h3{
+    margin-bottom:22px;
+}
+
+.filter-group{
+    margin-bottom:25px;
+}
+
+.filter-group label{
+    display:block;
+    margin-bottom:10px;
+    font-size:14px;
+}
+
+.filter-group input{
+    margin-right:8px;
+}
+
+.price{
+    color:#1677ff;
+    font-weight:bold;
+}
+
+.sort{
+    background:white;
+    padding:15px 18px;
+    border-radius:12px;
+    margin-bottom:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.sort select{
+    padding:10px;
+    border:1px solid #d0d5dd;
+    border-radius:8px;
+}
+
+.flight{
+    background:white;
+    border-radius:18px;
+    margin-bottom:18px;
+    padding:24px;
+    box-shadow:0 5px 20px rgba(0,0,0,.05);
+    position:relative;
+}
+
+.best{
+    position:absolute;
+    top:0;
+    left:0;
+    background:#1677ff;
+    color:white;
+    padding:7px 14px;
+    border-radius:18px 0 10px 0;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.flight-main{
+    display:grid;
+    grid-template-columns:1fr 1.5fr 1fr auto;
+    gap:20px;
+    align-items:center;
+}
+
+.airline{
+    font-weight:bold;
+    font-size:17px;
+}
+
+.airline small{
+    display:block;
+    color:#667085;
+    font-size:12px;
+    margin-top:5px;
+}
+
+.time{
+    text-align:center;
+}
+
+.time strong{
+    font-size:25px;
+}
+
+.time span{
+    display:block;
+    color:#667085;
+    font-size:12px;
+    margin-top:5px;
+}
+
+.line{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:7px 0;
+}
+
+.line hr{
+    flex:1;
+    border:none;
+    border-top:2px solid #dbe3ee;
+}
+
+.line b{
+    font-size:12px;
+    color:#667085;
+}
+
+.price-box{
+    text-align:right;
+}
+
+.price-box small{
+    color:#667085;
+    display:block;
+    margin-bottom:4px;
+}
+
+.price-box strong{
+    font-size:27px;
+}
+
+.select-btn{
+    margin-top:10px;
+    width:100%;
+    padding:12px 20px;
+    background:#071b35;
+    color:white;
+    border:none;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.select-btn:hover{
+    background:#1677ff;
+}
+
+.tags{
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+    margin-top:18px;
+}
+
+.tag{
+    background:#eef4ff;
+    color:#245ea8;
+    padding:6px 9px;
+    border-radius:6px;
+    font-size:11px;
+}
+
+.no-results{
+    display:none;
+    background:white;
+    padding:40px;
+    border-radius:15px;
+    text-align:center;
+}
+
+@media(max-width:900px){
+
+    .layout{
+        grid-template-columns:1fr;
+    }
+
+    .filters{
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:20px;
+    }
+
+    .filters h3{
+        grid-column:1/-1;
+        margin-bottom:0;
+    }
+
+    .filter-group{
+        margin-bottom:0;
+    }
+
+    .flight-main{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .price-box{
+        text-align:left;
+    }
+}
+
+@media(max-width:650px){
+
+    header{
+        padding:16px 5%;
+    }
+
+    nav{
+        gap:10px;
+    }
+
+    nav a{
+        font-size:11px;
+    }
+
+    .container{
+        margin:25px auto;
+        padding:12px;
+    }
+
+    .top h1{
+        font-size:27px;
+    }
+
+    .search-summary{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .filters{
+        display:block;
+    }
+
+    .filter-group{
+        margin-bottom:20px;
+    }
+
+    .flight{
+        padding:20px 15px;
+    }
+
+    .flight-main{
+        grid-template-columns:1fr;
+        gap:15px;
+    }
+
+    .time{
+        text-align:left;
+    }
+
+    .price-box{
+        text-align:left;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        ✈ <span>Sky</span>Book
+    </div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="manage-booking.html">Manage Booking</a>
+    </nav>
+
+</header>
+
+
+<div class="container">
+
+    <div class="top">
+
+        <h1>Available Flights</h1>
+
+        <div class="route" id="routeText">
+            Search results
+        </div>
+
+    </div>
+
+
+    <div class="search-summary">
+
+        <div class="summary-item">
+
+            <span>From</span>
+
+            <strong id="fromText">-</strong>
+
+        </div>
+
+
+        <div class="summary-item">
+
+            <span>To</span>
+
+            <strong id="toText">-</strong>
+
+        </div>
+
+
+        <div class="summary-item">
+
+            <span>Departure</span>
+
+            <strong id="dateText">-</strong>
+
+        </div>
+
+
+        <div class="summary-item">
+
+            <span>Passengers</span>
+
+            <strong id="passengerText">-</strong>
+
+        </div>
+
+    </div>
+
+
+    <br>
+
+
+    <div class="layout">
+
+
+        <!-- FILTERS -->
+
+        <aside class="filters">
+
+            <h3>Filter Flights</h3>
+
+
+            <div class="filter-group">
+
+                <label>
+                    <input
+                        type="checkbox"
+                        value="morning"
+                        onchange="filterFlights()"
+                    >
+                    Morning
+                </label>
+
+                <label>
+                    <input
+                        type="checkbox"
+                        value="afternoon"
+                        onchange="filterFlights()"
+                    >
+                    Afternoon
+                </label>
+
+                <label>
+                    <input
+                        type="checkbox"
+                        value="evening"
+                        onchange="filterFlights()"
+                    >
+                    Evening
+                </label>
+
+            </div>
+
+
+            <div class="filter-group">
+
+                <label>
+                    <input
+                        type="checkbox"
+                        value="economy"
+                        onchange="filterFlights()"
+                    >
+                    Economy
+                </label>
+
+                <label>
+                    <input
+                        type="checkbox"
+                        value="business"
+                        onchange="filterFlights()"
+                    >
+                    Business
+                </label>
+
+            </div>
+
+
+            <div class="filter-group">
+
+                <label>
+                    Maximum Price
+                </label>
+
+                <input
+                    type="range"
+                    id="priceRange"
+                    min="100"
+                    max="1000"
+                    value="1000"
+                    oninput="filterFlights()"
+                    style="width:100%;"
+                >
+
+                <div class="price">
+                    Up to $<span id="priceValue">1000</span>
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- FLIGHTS -->
+
+        <main>
+
+            <div class="sort">
+
+                <strong>
+                    <span id="flightCount">3</span>
+                    Flights Found
+                </strong>
+
+                <select
+                    id="sortSelect"
+                    onchange="sortFlights()"
+                >
+
+                    <option value="recommended">
+                        Recommended
+                    </option>
+
+                    <option value="low">
+                        Price: Low to High
+                    </option>
+
+                    <option value="high">
+                        Price: High to Low
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div id="flightList">
+
+
+                <!-- FLIGHT 1 -->
+
+                <div
+                    class="flight"
+                    data-price="249"
+                    data-time="morning"
+                    data-class="economy"
+                >
+
+                    <div class="best">
+                        BEST VALUE
+                    </div>
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+
+                            Sky Airways
+
+                            <small>
+                                SK 204
+                            </small>
+
+                        </div>
+
+
+                        <div>
+
+                            <div class="time">
+
+                                <strong>08:30</strong>
+
+                                <span>
+                                    2h 15m • Direct
+                                </span>
+
+                            </div>
+
+                            <div class="line">
+
+                                <b>Departure</b>
+
+                                <hr>
+
+                                <b>Arrival</b>
+
+                            </div>
+
+                            <div class="time">
+
+                                <strong>10:45</strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div>
+
+                            <div class="tags">
+
+                                <div class="tag">
+                                    Economy
+                                </div>
+
+                                <div class="tag">
+                                    Direct
+                                </div>
+
+                                <div class="tag">
+                                    Free Carry-on
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="price-box">
+
+                            <small>From</small>
+
+                            <strong>$249</strong>
+
+                            <button
+                                class="select-btn"
+                                onclick="selectFlight('Sky Airways','08:30','10:45','249')"
+                            >
+                                Select Flight
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FLIGHT 2 -->
+
+                <div
+                    class="flight"
+                    data-price="289"
+                    data-time="afternoon"
+                    data-class="economy"
+                >
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+
+                            Global Air
+
+                            <small>
+                                GA 512
+                            </small>
+
+                        </div>
+
+
+                        <div>
+
+                            <div class="time">
+
+                                <strong>13:20</strong>
+
+                                <span>
+                                    2h 20m • Direct
+                                </span>
+
+                            </div>
+
+                            <div class="line">
+
+                                <b>Departure</b>
+
+                                <hr>
+
+                                <b>Arrival</b>
+
+                            </div>
+
+                            <div class="time">
+
+                                <strong>15:40</strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div>
+
+                            <div class="tags">
+
+                                <div class="tag">
+                                    Economy
+                                </div>
+
+                                <div class="tag">
+                                    Direct
+                                </div>
+
+                                <div class="tag">
+                                    Wi-Fi
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="price-box">
+
+                            <small>From</small>
+
+                            <strong>$289</strong>
+
+                            <button
+                                class="select-btn"
+                                onclick="selectFlight('Global Air','13:20','15:40','289')"
+                            >
+                                Select Flight
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FLIGHT 3 -->
+
+                <div
+                    class="flight"
+                    data-price="599"
+                    data-time="evening"
+                    data-class="business"
+                >
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+
+                            World Express
+
+                            <small>
+                                WE 901
+                            </small>
+
+                        </div>
+
+
+                        <div>
+
+                            <div class="time">
+
+                                <strong>18:10</strong>
+
+                                <span>
+                                    2h 10m • Direct
+                                </span>
+
+                            </div>
+
+                            <div class="line">
+
+                                <b>Departure</b>
+
+                                <hr>
+
+                                <b>Arrival</b>
+
+                            </div>
+
+                            <div class="time">
+
+                                <strong>20:20</strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div>
+
+                            <div class="tags">
+
+                                <div class="tag">
+                                    Business
+                                </div>
+
+                                <div class="tag">
+                                    Direct
+                                </div>
+
+                                <div class="tag">
+                                    Lounge
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="price-box">
+
+                            <small>From</small>
+
+                            <strong>$599</strong>
+
+                            <button
+                                class="select-btn"
+                                onclick="selectFlight('World Express','18:10','20:20','599')"
+                            >
+                                Select Flight
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div
+                id="noResults"
+                class="no-results"
+            >
+
+                <h2>No Flights Found</h2>
+
+                <p>
+                    Try changing your filters.
+                </p>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* LOAD SEARCH DATA */
+
+const from =
+    localStorage.getItem("flight_from") || "Kabul";
+
+const to =
+    localStorage.getItem("flight_to") || "Dubai";
+
+const date =
+    localStorage.getItem("flight_date") || "-";
+
+const passengers =
+    localStorage.getItem("flight_passengers") || "1";
+
+
+document.getElementById("fromText")
+    .textContent = from;
+
+document.getElementById("toText")
+    .textContent = to;
+
+document.getElementById("dateText")
+    .textContent = date;
+
+document.getElementById("passengerText")
+    .textContent =
+    passengers +
+    (passengers === "1"
+        ? " Passenger"
+        : " Passengers");
+
+document.getElementById("routeText")
+    .textContent =
+    from + " → " + to;
+
+
+/* SELECT FLIGHT */
+
+function selectFlight(
+    airline,
+    departure,
+    arrival,
+    price
+){
+
+    localStorage.setItem(
+        "selected_airline",
+        airline
+    );
+
+    localStorage.setItem(
+        "selected_departure",
+        departure
+    );
+
+    localStorage.setItem(
+        "selected_arrival",
+        arrival
+    );
+
+    localStorage.setItem(
+        "selected_price",
+        price
+    );
+
+    window.location.href =
+        "passenger.html";
+}
+
+
+/* FILTER */
+
+function filterFlights(){
+
+    const flights =
+        document.querySelectorAll(".flight");
+
+    const priceLimit =
+        Number(
+            document.getElementById("priceRange").value
+        );
+
+    document.getElementById("priceValue")
+        .textContent = priceLimit;
+
+
+    const timeFilters =
+        Array.from(
+            document.querySelectorAll(
+                '.filter-group input[type="checkbox"]'
+            )
+        );
+
+
+    const selectedTimes =
+        timeFilters
+        .filter(input =>
+            input.checked &&
+            ["morning","afternoon","evening"]
+            .includes(input.value)
+        )
+        .map(input => input.value);
+
+
+    const selectedClasses =
+        timeFilters
+        .filter(input =>
+            input.checked &&
+            ["economy","business"]
+            .includes(input.value)
+        )
+        .map(input => input.value);
+
+
+    let visible = 0;
+
+
+    flights.forEach(flight => {
+
+        const price =
+            Number(flight.dataset.price);
+
+        const time =
+            flight.dataset.time;
+
+        const flightClass =
+            flight.dataset.class;
+
+
+        const timeOK =
+            selectedTimes.length === 0 ||
+            selectedTimes.includes(time);
+
+
+        const classOK =
+            selectedClasses.length === 0 ||
+            selectedClasses.includes(flightClass);
+
+
+        const priceOK =
+            price <= priceLimit;
+
+
+        if(
+            timeOK &&
+            classOK &&
+            priceOK
+        ){
+
+            flight.style.display = "block";
+
+            visible++;
+
+        }else{
+
+            flight.style.display = "none";
+
+        }
+
+    });
+
+
+    document.getElementById("flightCount")
+        .textContent = visible;
+
+
+    document.getElementById("noResults")
+        .style.display =
+        visible === 0
+        ? "block"
+        : "none";
+}
+
+
+/* SORT */
+
+function sortFlights(){
+
+    const list =
+        document.getElementById("flightList");
+
+    const flights =
+        Array.from(
+            list.querySelectorAll(".flight")
+        );
+
+    const sort =
+        document.getElementById("sortSelect")
+        .value;
+
+
+    if(sort === "low"){
+
+        flights.sort(
+            (a,b) =>
+            Number(a.dataset.price) -
+            Number(b.dataset.price)
+        );
+
+    }
+
+
+    if(sort === "high"){
+
+        flights.sort(
+            (a,b) =>
+            Number(b.dataset.price) -
+            Number(a.dataset.price)
+        );
+
+    }
+
+
+    if(sort === "recommended"){
+
+        flights.sort(
+            (a,b) =>
+            Number(a.dataset.price) -
+            Number(b.dataset.price)
+        );
+
+    }
+
+
+    flights.forEach(
+        flight => list.appendChild(flight)
+    );
+
+}
+
+</script>
+
+</body>
+</html>
